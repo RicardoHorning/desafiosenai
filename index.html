@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SESI SENAI — Indústria do Futuro EcoTech (Aprendizagem Industrial 16h)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sesi: {
+              navy: '#002B49',      /* Azul Marinho SESI */
+              primary: '#003865',   /* Azul Oficial SESI/SENAI */
+              secondary: '#005696', /* Azul Real SENAI */
+              cyan: '#0082C8',      /* Azul Cyan Destaque */
+              cardBg: '#0A192F',    /* Fundo dos Cards Dark Navy */
+              cardBorder: '#1E3A5F' /* Borda de Cards */
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #001222;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #003865;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #005696;
+    }
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 130, 200, 0.2); }
+      50% { box-shadow: 0 0 25px rgba(0, 130, 200, 0.5); }
+    }
+    .warning-pulse {
+      animation: warningPulse 1s infinite;
+    }
+    @keyframes warningPulse {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+      50% { border-color: rgba(239, 68, 68, 0.3); box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
+    }
+    button, input, select, textarea {
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+<body class="bg-[#001222] text-slate-100 min-h-screen flex flex-col justify-between selection:bg-sky-500 selection:text-white">
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-4 right-4 left-4 sm:left-auto sm:w-96 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- CABEÇALHO DA APLICAÇÃO -->
+  <header class="bg-sesi-navy border-b border-sesi-cardBorder shadow-xl sticky top-0 z-40 backdrop-blur-md bg-opacity-95">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      
+      <!-- Logo SESI / SENAI -->
+      <div class="flex items-center space-x-2.5 cursor-pointer" onclick="voltarInicio()">
+        <div class="flex items-center bg-white px-2 py-1 rounded-md shadow-md gap-1">
+          <span class="text-sesi-primary font-black text-base sm:text-lg tracking-tighter">SESI</span>
+          <span class="text-slate-300 font-light">|</span>
+          <span class="text-sesi-secondary font-black text-base sm:text-lg tracking-tighter">SENAI</span>
+        </div>
+        <div>
+          <h1 class="text-xs sm:text-base font-bold tracking-tight text-white leading-tight">AFONSO PENA</h1>
+          <p class="text-[10px] sm:text-[11px] text-sky-400 font-medium">Aprendizagem Industrial • Sprint 16h (4 Encontros)</p>
+        </div>
+      </div>
+
+      <!-- Ações do Cabeçalho -->
+      <div class="flex items-center gap-2">
+        <button id="btn-header-dossie" onclick="abrirModalDossie()" class="hidden bg-sky-600 hover:bg-sky-500 text-white text-xs px-3 py-2 rounded-xl border border-sky-400/40 transition flex items-center gap-1.5 shadow-md active:scale-95 font-bold animate-pulse">
+          <i class="fa-solid fa-file-contract text-yellow-300"></i>
+          <span class="hidden sm:inline">📄 Dossiê do Caso</span>
+          <span class="sm:hidden">Dossiê</span>
+        </button>
+
+        <!-- Indicador de Status do Cloud Firestore -->
+        <span id="badge-db-status" class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-800">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="txt-db-status">Firestore Conectado</span>
+        </span>
+
+        <!-- Botão Módulo Professor -->
+        <button onclick="abrirModalProfessor()" class="bg-sesi-primary hover:bg-sesi-secondary text-white text-xs px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl border border-sky-500/30 transition flex items-center gap-1.5 shadow-sm active:scale-95 font-medium">
+          <i class="fa-solid fa-user-shield text-sky-400"></i>
+          <span class="hidden sm:inline">Módulo Professor</span>
+          <span class="sm:hidden">Professor</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-5xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-8 flex-grow">
+
+    <!-- TELA 1: IDENTIFICAÇÃO DA EQUIPE E SELEÇÃO DAS 12 UCs -->
+    <section id="sec-identificacao" class="bg-sesi-cardBg rounded-2xl p-4 sm:p-8 border border-sesi-cardBorder shadow-2xl relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="border-b border-sesi-cardBorder pb-4 sm:pb-5 mb-5 sm:mb-6">
+        <span class="inline-block px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 text-[11px] font-bold rounded-full mb-2">
+          Aprendizagem Industrial • Assistente Administrativo (16h Totais)
+        </span>
+        <h2 class="text-xl sm:text-3xl font-extrabold text-white flex items-center gap-2.5">
+          <i class="fa-solid fa-users-gear text-sky-400"></i> Identificação da Equipe & Sincronização Cloud
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1.5">
+          Selecione a UC, o Turno, a Turma e o Nome da Equipe. Se você iniciou a atividade no celular, digite o mesmo nome de equipe para continuar seu projeto de onde parou!
+        </p>
+      </div>
+
+      <form id="form-identificacao" onsubmit="iniciarMissaoEstudante(event)" class="space-y-5 sm:space-y-6">
+        
+        <!-- Seleção Completa das 12 UCs -->
+        <div class="bg-[#001222] p-3.5 sm:p-4.5 rounded-xl border border-sky-500/40 space-y-2">
+          <label class="block text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-sm"></i> Unidade Curricular (UC em Cursagem) *
+          </label>
+          <select id="sel-uc" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-xl p-3 text-xs sm:text-sm text-slate-100 font-semibold focus:border-sky-400 focus:outline-none">
+            <option value="">Selecione a Unidade Curricular da Turma...</option>
+            <optgroup label="Módulos Básicos e Introdutórios">
+              <option value="UC01">UC 01 — Fundamentos da Comunicação e Informação (20h)</option>
+              <option value="UC02">UC 02 — Relações Socioprofissionais, Cidadania e Ética (20h)</option>
+              <option value="UC03">UC 03 — Saúde e Segurança do Trabalho (20h)</option>
+              <option value="UC04">UC 04 — Raciocínio Lógico e Análise de Dados (20h)</option>
+              <option value="UC05">UC 05 — Transformação Digital no Setor Industrial (20h)</option>
+              <option value="UC06">UC 06 — Planejamento e Organização do Trabalho (20h)</option>
+            </optgroup>
+            <optgroup label="Módulos Específicos do Assistente Administrativo">
+              <option value="UC07">UC 07 — Fundamentos da Administração (80h)</option>
+              <option value="UC08">UC 08 — Gestão de Pessoas (80h)</option>
+              <option value="UC09">UC 09 — Marketing, Comercial e Vendas (80h)</option>
+              <option value="UC10">UC 10 — Gestão Contábil e Financeira (80h)</option>
+              <option value="UC11" selected>UC 11 — Gestão da Produção, Operações e Logística (80h)</option>
+              <option value="UC12">UC 12 — Tratamento e Gerenciamento de Dados Quantitativos (80h)</option>
+            </optgroup>
+          </select>
+          <p class="text-[11px] text-slate-400">O Dossiê Auditado, as caixas didáticas de fórmulas e os entregáveis serão configurados automaticamente.</p>
+        </div>
+
+        <!-- Grid de Seleção do Turno e Turma -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Turno *</label>
+            <select id="sel-turno" required class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs sm:text-sm text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="">Selecione o Turno...</option>
+              <option value="M">M — Matutino (08h às 12h)</option>
+              <option value="V">V — Vespertino (13h30 às 17h30)</option>
+              <option value="N">N — Noturno (18h30 às 22h30)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Turma de Aprendizagem *</label>
+            <select id="sel-turma" required class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs sm:text-sm text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="">Selecione a Turma...</option>
+              <option value="A">Turma A</option>
+              <option value="B">Turma B</option>
+              <option value="C">Turma C</option>
+              <option value="D">Turma D</option>
+              <option value="E">Turma E</option>
+              <option value="F">Turma F</option>
+              <option value="G">Turma G</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Nome da Equipe -->
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Nome Único da Equipe *</label>
+            <span class="text-[10px] text-sky-400 font-mono">Sorteio determinístico de setor</span>
+          </div>
+          <input type="text" id="inp-equipe" maxlength="8" required placeholder="Ex: ALPHA1" 
+                 class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm sm:text-base text-sky-300 uppercase font-mono tracking-widest font-bold focus:border-sky-400 focus:outline-none"
+                 oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); atualizarPreviewSetor(this.value)">
+          
+          <div id="box-preview-setor" class="mt-2 text-xs p-3 rounded-xl bg-sesi-navy/80 border border-sesi-cardBorder flex items-center gap-3 text-slate-300">
+            <i class="fa-solid fa-cube text-sky-400 text-base"></i>
+            <div>
+              <span class="text-[10px] uppercase text-slate-400 block font-semibold">Departamento Atribuído</span>
+              <span id="txt-preview-setor" class="font-bold text-white">Digite o nome da equipe para sortear o setor da fábrica...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrantes da Equipe -->
+        <div class="space-y-3 pt-1">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Integrantes da Equipe (Até 5 Aprendizes) *
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <input type="text" id="int-1" required placeholder="1. Nome Completo (Obrigatório)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-2" placeholder="2. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-3" placeholder="3. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-4" placeholder="4. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-5" placeholder="5. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+          </div>
+        </div>
+
+        <button type="submit" id="btn-iniciar-sprint" class="w-full bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white font-bold py-3.5 sm:py-4 rounded-xl shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2.5 text-sm sm:text-base">
+          <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+          <span>Entrar / Sincronizar Projeto da Equipe</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- TELA 2: PAINEL DO DESAFIO DO ALUNO (4 DIAS / 16H) -->
+    <section id="sec-desafio" class="hidden space-y-5 sm:space-y-6">
+      
+      <!-- Card de Status do Grupo -->
+      <div class="bg-sesi-cardBg rounded-2xl p-4 sm:p-6 border border-sesi-cardBorder shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span id="badge-uc-titulo" class="bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-2"></span>
+          <h2 id="txt-equipe-titulo" class="text-xl sm:text-2xl font-extrabold text-white"></h2>
+          <p id="txt-turma-sub" class="text-xs text-slate-300 mt-1 leading-relaxed"></p>
+        </div>
+
+        <!-- Indicadores dos 4 Dias de Aprendizagem -->
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
+          <div id="st-pill-dia1" class="text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-300 border border-sesi-cardBorder flex items-center gap-1">
+            <i class="fa-solid fa-clock text-amber-400"></i> Dia 1: Em Andamento
+          </div>
+          <div id="st-pill-dia2" class="text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1">
+            <i class="fa-solid fa-lock text-slate-600"></i> Dia 2
+          </div>
+          <div id="st-pill-dia3" class="text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1">
+            <i class="fa-solid fa-lock text-slate-600"></i> Dia 3
+          </div>
+          <div id="st-pill-dia4" class="text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1">
+            <i class="fa-solid fa-lock text-slate-600"></i> Dia 4 Banca
+          </div>
+        </div>
+      </div>
+
+      <!-- BANNER TRANSVERSAL DE SUSTENTABILIDADE & ESG -->
+      <div class="bg-gradient-to-r from-emerald-950/60 via-sesi-navy to-emerald-950/60 rounded-2xl p-4 sm:p-5 border border-emerald-500/40 shadow-xl space-y-2">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div class="space-y-1">
+            <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+              <i class="fa-solid fa-leaf text-emerald-400"></i> Diretriz Transversal SENAI: Compromisso ESG & ODS ONU
+            </span>
+            <h4 class="text-xs sm:text-sm font-bold text-white">Dimensão Socioambiental Obrigatória em Todas as UCs</h4>
+            <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed">
+              Sua equipe deve comprovar ganhos de ecoeficiência (redução de CO₂, economia circular, descarte zero) e valorização humana (transição justa, ergonomia, inclusão).
+            </p>
+          </div>
+          <span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[11px] font-bold px-3 py-1 rounded-xl whitespace-nowrap self-start sm:self-auto">
+            <i class="fa-solid fa-earth-americas mr-1"></i> EcoTech Verde
+          </span>
+        </div>
+      </div>
+
+      <!-- Banner do Setor Atribuído -->
+      <div id="banner-setor-atribuido" class="rounded-2xl p-4 sm:p-6 border shadow-lg transition duration-300"></div>
+
+      <!-- Card Dossiê do Caso -->
+      <div id="card-dossie-topo" class="bg-gradient-to-r from-sky-950/60 via-sesi-navy to-sky-950/60 rounded-2xl p-4 sm:p-5 border border-sky-500/40 shadow-xl space-y-3"></div>
+
+      <!-- CARD DE ALERTA DE BLOQUEIO POR IA / PLÁGIO -->
+      <div id="box-bloqueado" class="hidden bg-gradient-to-b from-red-950/90 via-[#1a0505] to-red-950/90 rounded-2xl p-6 md:p-10 border-2 border-red-600/80 shadow-2xl space-y-5 text-center animate-pulse">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-red-600/20 text-red-500 rounded-full flex items-center justify-center mx-auto text-2xl sm:text-3xl border-2 border-red-500 shadow-lg">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        
+        <div class="space-y-2 max-w-xl mx-auto">
+          <span class="bg-red-900/60 text-red-300 border border-red-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest inline-block">
+            ⚠️ Bloqueio de Integridade Acadêmica
+          </span>
+          <h3 class="text-xl sm:text-3xl font-black text-white uppercase">
+            PROJETO BLOQUEADO PELO PROFESSOR
+          </h3>
+          <p class="text-xs sm:text-sm text-red-200 font-medium leading-relaxed bg-red-950/50 p-3.5 rounded-xl border border-red-800/60">
+            Este projeto foi <strong class="text-white underline decoration-red-500">BLOQUEADO</strong> por conter indícios de plágio ou uso não autorizado de IA. Procure o professor Ricardo.
+          </p>
+        </div>
+
+        <button type="button" onclick="reiniciarNovoProjeto()" class="bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 text-white font-extrabold px-6 py-3.5 rounded-xl shadow-xl text-xs sm:text-sm transition transform active:scale-95 flex items-center justify-center gap-2 mx-auto border border-red-400/30">
+          <i class="fa-solid fa-rotate-left"></i> Reiniciar e Iniciar Novo Projeto Autoral
+        </button>
+      </div>
+
+      <!-- FORMULÁRIO DE ENTREGAS DOS 4 DIAS -->
+      <form id="form-missao" onsubmit="salvarRespostasEstudante(event)" class="space-y-5 sm:space-y-6">
+
+        <!-- DIA 1 (4 HORAS) -->
+        <div id="box-dia1" class="bg-sesi-cardBg rounded-2xl p-4 sm:p-8 border border-sesi-cardBorder shadow-xl space-y-5">
+          <div class="border-b border-sesi-cardBorder pb-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-bold text-sky-400 uppercase tracking-wider">Encontro 1 (4 Horas)</span>
+              <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-magnifying-glass text-sky-400"></i> DIA 1: Diagnóstico de Processo & Mapeamento Socioambiental
+              </h3>
+            </div>
+            <span class="text-[11px] bg-sesi-navy text-slate-300 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              Obrigatório para Liberar Dia 2
+            </span>
+          </div>
+
+          <div id="conteudo-dia1" class="space-y-5"></div>
+        </div>
+
+        <!-- DIA 2 (4 HORAS) -->
+        <div id="box-dia2" class="bg-sesi-cardBg rounded-2xl p-4 sm:p-8 border border-sesi-cardBorder shadow-xl space-y-5 opacity-60 pointer-events-none transition duration-300">
+          <div class="border-b border-sesi-cardBorder pb-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">Encontro 2 (4 Horas)</span>
+              <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-calculator text-amber-400"></i> DIA 2: Engenharia de Soluções, Cálculos & Padronização (POP)
+              </h3>
+            </div>
+            <span id="badge-lock-dia2" class="text-[11px] bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              <i class="fa-solid fa-lock"></i> Bloqueado (Conclua o Dia 1)
+            </span>
+          </div>
+
+          <div id="conteudo-dia2" class="space-y-5"></div>
+        </div>
+
+        <!-- DIA 3 (4 HORAS) -->
+        <div id="box-dia3" class="bg-sesi-cardBg rounded-2xl p-4 sm:p-8 border border-sesi-cardBorder shadow-xl space-y-5 opacity-60 pointer-events-none transition duration-300">
+          <div class="border-b border-sesi-cardBorder pb-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-bold text-purple-400 uppercase tracking-wider">Encontro 3 (4 Horas)</span>
+              <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-chart-line text-purple-400"></i> DIA 3: Gestão Visual, Painel de KPIs & Transição Justa
+              </h3>
+            </div>
+            <span id="badge-lock-dia3" class="text-[11px] bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              <i class="fa-solid fa-lock"></i> Bloqueado (Conclua o Dia 2)
+            </span>
+          </div>
+
+          <div id="conteudo-dia3" class="space-y-5"></div>
+        </div>
+
+        <!-- DIA 4 (4 HORAS) — BANCA EXECUTIVA DE 15 MINUTOS -->
+        <div id="box-dia4" class="bg-sesi-cardBg rounded-2xl p-4 sm:p-8 border border-sesi-cardBorder shadow-xl space-y-5 opacity-60 pointer-events-none transition duration-300">
+          <div class="border-b border-sesi-cardBorder pb-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Encontro 4 (4 Horas / Defesa de 15 min)</span>
+              <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-microphone-lines text-emerald-400"></i> DIA 4: Dossiê de Consultoria & Seminário Executivo
+              </h3>
+            </div>
+            <span id="badge-lock-dia4" class="text-[11px] bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              <i class="fa-solid fa-lock"></i> Bloqueado (Conclua o Dia 3)
+            </span>
+          </div>
+
+          <div class="bg-gradient-to-r from-emerald-950/40 to-sesi-navy p-4 rounded-xl border border-emerald-800/40 space-y-3">
+            <h4 class="text-xs sm:text-sm font-bold text-emerald-300 flex items-center gap-2">
+              <i class="fa-solid fa-bullhorn"></i> Estrutura da Defesa Oral Executiva (15 Minutos Totais por Equipe)
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
+                <span class="font-bold text-sky-400 block mb-1">1. O Diagnóstico (4 min)</span>
+                <p class="text-slate-300">Apresentação do setor sorteado, SIPOC/Organograma e causa-raiz socioambiental.</p>
+              </div>
+              <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
+                <span class="font-bold text-amber-400 block mb-1">2. Solução & Fórmulas (6 min)</span>
+                <p class="text-slate-300">Defesa da solução, memória de cálculo (Eco-ROI, PR, INSS, OTIF), POP e 5W2H.</p>
+              </div>
+              <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
+                <span class="font-bold text-emerald-400 block mb-1">3. KPIs & Transição (5 min)</span>
+                <p class="text-slate-300">Exibição do painel ESG/Kanban e resposta às arguições da banca examinadora do SENAI.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-slate-200">
+              Roteiro de Oratória Executiva e Pontos de Fala dos Porta-Vozes da Equipe:
+            </label>
+            <textarea id="q1_d4" rows="4" placeholder="Descreva o roteiro de fala da equipe cobrindo o diagnóstico, a matemática financeira/ambiental e os KPIs..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <button type="button" onclick="voltarIdentificacao()" class="sm:w-1/3 bg-sesi-navy hover:bg-sesi-primary text-slate-300 font-semibold py-3 rounded-xl text-xs sm:text-sm transition border border-sesi-cardBorder">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Alterar UC / Voltar
+          </button>
+
+          <button type="submit" id="btn-salvar-resposta" class="sm:w-2/3 bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+            <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+            <span>Salvar & Sincronizar Entregas no Firestore</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- TELA 3: MÓDULO DO PROFESSOR -->
+    <section id="sec-professor" class="hidden space-y-6">
+      
+      <div class="bg-sesi-cardBg rounded-2xl p-4 sm:p-6 border border-sesi-cardBorder shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-1">
+            Painel de Gestão Pedagógica • Aprendizagem
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+            <i class="fa-solid fa-chalkboard-user text-sky-400"></i> Módulo Professor (SESI SENAI)
+          </h2>
+          <p class="text-xs text-slate-300 mt-1">
+            Usuário: <span class="text-sky-300 font-mono">ricardohorning@hotmail.com</span>
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button onclick="gerarDadosDemonstrativos()" class="text-xs bg-sesi-navy hover:bg-sesi-primary text-amber-400 border border-amber-500/30 px-3 py-2 rounded-xl font-medium transition flex items-center gap-1.5 shadow">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Dados de Exemplo
+          </button>
+          <button onclick="excluirTodasEntregasTurmaAtual()" class="text-xs bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-700/50 px-3 py-2 rounded-xl font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-trash-can"></i> Limpar Turma
+          </button>
+          <button onclick="sairProfessor()" class="text-xs bg-sesi-navy hover:bg-sesi-primary text-slate-300 border border-sesi-cardBorder px-3 py-2 rounded-xl font-medium transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i> Sair
+          </button>
+        </div>
+      </div>
+
+      <!-- CRONÔMETRO INTERATIVO DA BANCA EXECUTIVA (15 MINUTOS) -->
+      <div id="prof-timer-box" class="bg-gradient-to-r from-sesi-navy via-[#0A192F] to-sesi-navy rounded-2xl p-5 sm:p-6 border border-emerald-500/30 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-5">
+        <div class="space-y-1 text-center md:text-left">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block">
+            <i class="fa-solid fa-stopwatch mr-1"></i> Cronômetro da Banca Executiva (15 Minutos)
+          </span>
+          <h3 class="text-base sm:text-lg font-bold text-white">Banca Examinadora do SENAI Afonso Pena</h3>
+          <p class="text-xs text-slate-400">Tempo total por equipe: 10 min de apresentação + 5 min de arguição.</p>
+        </div>
+
+        <div class="flex flex-col items-center gap-3">
+          <div id="prof-timer-display" class="font-mono text-4xl sm:text-5xl font-black text-emerald-300 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-emerald-500/40 shadow-inner">
+            15:00
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="iniciarTimerPitch()" id="btn-timer-start" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+              <i class="fa-solid fa-play"></i> Iniciar
+            </button>
+            <button onclick="pausarTimerPitch()" id="btn-timer-pause" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+              <i class="fa-solid fa-pause"></i> Pausar
+            </button>
+            <button onclick="resetarTimerPitch()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-3 py-2 rounded-xl transition">
+              <i class="fa-solid fa-rotate-left"></i> Reset (15m)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros da Turma para Todas as UCs -->
+      <div class="bg-sesi-cardBg p-4 sm:p-5 rounded-2xl border border-sesi-cardBorder shadow-lg space-y-3">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-filter text-sky-400"></i> Filtrar Entregas por UC, Turno & Turma
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-400 mb-1">Unidade Curricular (UC)</label>
+            <select id="prof-filtro-uc" onchange="carregarEntregasProfessor()" class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="UC01">UC 01 — Comunicação e Informação</option>
+              <option value="UC02">UC 02 — Relações Socioprofissionais</option>
+              <option value="UC03">UC 03 — Saúde e Segurança Trabalho</option>
+              <option value="UC04">UC 04 — Raciocínio Lógico e Dados</option>
+              <option value="UC05">UC 05 — Transformação Digital</option>
+              <option value="UC06">UC 06 — Planejamento do Trabalho</option>
+              <option value="UC07">UC 07 — Fundamentos Administração</option>
+              <option value="UC08">UC 08 — Gestão de Pessoas</option>
+              <option value="UC09">UC 09 — Marketing e Vendas</option>
+              <option value="UC10">UC 10 — Gestão Contábil e Financeira</option>
+              <option value="UC11" selected>UC 11 — Produção e Logística</option>
+              <option value="UC12">UC 12 — Dados Quantitativos</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-400 mb-1">Turno</label>
+            <select id="prof-filtro-turno" onchange="carregarEntregasProfessor()" class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="M">M — Matutino</option>
+              <option value="V">V — Vespertino</option>
+              <option value="N">N — Noturno</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-400 mb-1">Turma</label>
+            <select id="prof-filtro-turma" onchange="carregarEntregasProfessor()" class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="A">Turma A</option>
+              <option value="B">Turma B</option>
+              <option value="C">Turma C</option>
+              <option value="D">Turma D</option>
+              <option value="E">Turma E</option>
+              <option value="F">Turma F</option>
+              <option value="G">Turma G</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Container de Lista de Entregas -->
+      <div id="lista-equipes-prof" class="space-y-4">
+        <!-- Renderizado via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DE DOSSIÊ COMPLETO COM ESTUDOS DE CASO NARRATIVOS -->
+  <div id="modal-dossie-fabrica" class="fixed inset-0 bg-[#001122]/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-sky-500/50 rounded-2xl max-w-3xl w-full p-5 sm:p-8 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="fecharModalDossie()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-sesi-navy p-2 rounded-xl border border-sesi-cardBorder">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-sesi-cardBorder pb-3.5">
+        <div class="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl text-lg border border-sky-500/30">
+          <i class="fa-solid fa-file-contract"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">Estudo de Caso Auditado • Aprendizagem Industrial</span>
+          <h3 id="modal-dossie-titulo" class="text-base sm:text-xl font-bold text-white">Dossiê Completo do Setor</h3>
+        </div>
+      </div>
+
+      <div id="modal-dossie-corpo" class="space-y-4 text-xs leading-relaxed text-slate-200">
+        <!-- Preenchido via JS -->
+      </div>
+
+      <div class="pt-2 border-t border-sesi-cardBorder text-right">
+        <button onclick="fecharModalDossie()" class="bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg transition">
+          Entendido, Voltar às Atividades
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDIÇÃO DE PROJETO -->
+  <div id="modal-prof-editar" class="fixed inset-0 bg-[#001122]/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-sky-500/50 rounded-2xl max-w-2xl w-full p-5 sm:p-8 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="fecharModalEditarProf()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-sesi-navy p-2 rounded-xl border border-sesi-cardBorder">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-sesi-cardBorder pb-3.5">
+        <div class="p-2.5 bg-amber-500/10 text-amber-400 rounded-xl text-lg border border-amber-500/30">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">Edição Administrativa do Professor</span>
+          <h3 class="text-base sm:text-xl font-bold text-white">Editar Dados e Vínculo da Equipe</h3>
+        </div>
+      </div>
+
+      <form id="form-editar-prof" onsubmit="salvarEdicaoProfessor(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="edit-id-original">
+
+        <div class="p-3.5 bg-[#001222] rounded-xl border border-sesi-cardBorder space-y-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400 block">Vínculo da Turma & UC *</span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-slate-400 mb-1">Unidade Curricular</label>
+              <select id="edit-uc" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-slate-200 focus:outline-none">
+                <option value="UC01">UC 01 — Comunicação</option>
+                <option value="UC02">UC 02 — Relações Socioprofissionais</option>
+                <option value="UC03">UC 03 — Saúde e Segurança</option>
+                <option value="UC04">UC 04 — Raciocínio Lógico</option>
+                <option value="UC05">UC 05 — Transformação Digital</option>
+                <option value="UC06">UC 06 — Planejamento</option>
+                <option value="UC07">UC 07 — Fundamentos Administração</option>
+                <option value="UC08">UC 08 — Gestão de Pessoas</option>
+                <option value="UC09">UC 09 — Marketing e Vendas</option>
+                <option value="UC10">UC 10 — Gestão Contábil e Financeira</option>
+                <option value="UC11">UC 11 — Produção e Logística</option>
+                <option value="UC12">UC 12 — Dados Quantitativos</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Turno</label>
+              <select id="edit-turno" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-slate-200 focus:outline-none">
+                <option value="M">M — Matutino</option>
+                <option value="V">V — Vespertino</option>
+                <option value="N">N — Noturno</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Turma</label>
+              <select id="edit-turma" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-slate-200 focus:outline-none">
+                <option value="A">Turma A</option>
+                <option value="B">Turma B</option>
+                <option value="C">Turma C</option>
+                <option value="D">Turma D</option>
+                <option value="E">Turma E</option>
+                <option value="F">Turma F</option>
+                <option value="G">Turma G</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3.5 bg-[#001222] rounded-xl border border-sesi-cardBorder space-y-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400 block">Equipe e Integrantes</span>
+          <div>
+            <label class="block text-slate-400 mb-1">Nome da Equipe</label>
+            <input type="text" id="edit-equipe" required maxlength="8" class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-sky-300 font-mono font-bold uppercase focus:outline-none">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-slate-400">Integrantes</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" id="edit-int-1" required placeholder="1. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200">
+              <input type="text" id="edit-int-2" placeholder="2. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200">
+              <input type="text" id="edit-int-3" placeholder="3. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200">
+              <input type="text" id="edit-int-4" placeholder="4. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200">
+              <input type="text" id="edit-int-5" placeholder="5. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="fecharModalEditarProf()" class="w-1/3 bg-sesi-navy hover:bg-sesi-primary text-slate-300 font-semibold py-3 rounded-xl transition border border-sesi-cardBorder">
+            Cancelar
+          </button>
+          <button type="submit" class="w-2/3 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE LOGIN PROFESSOR -->
+  <div id="modal-prof-login" class="fixed inset-0 bg-[#001122]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative">
+      
+      <button onclick="fecharModalProfessor()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 bg-sky-500/10 text-sky-400 rounded-full flex items-center justify-center mx-auto text-xl mb-2 border border-sky-500/30">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">Acesso do Professor</h3>
+        <p class="text-xs text-slate-400">Insira suas credenciais para gerenciar a turma.</p>
+      </div>
+
+      <form onsubmit="autenticarProfessor(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">E-mail Cadastrado</label>
+          <input type="email" id="login-email" required value="ricardohorning@hotmail.com" 
+                 class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Senha de Acesso</label>
+          <input type="password" id="login-senha" required placeholder="••••••••" 
+                 class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:outline-none">
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="fecharModalProfessor()" class="w-1/2 bg-sesi-navy hover:bg-sesi-primary text-slate-300 text-xs font-semibold py-3 rounded-xl transition border border-sesi-cardBorder">
+            Cancelar
+          </button>
+          <button type="submit" class="w-1/2 bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary text-white text-xs font-bold py-3 rounded-xl transition shadow-lg">
+            Acessar Módulo
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO DINÂMICO -->
+  <div id="modal-confirmacao" class="fixed inset-0 bg-[#001122]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-red-700/50 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-center">
+      <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mx-auto text-xl border border-red-500/30">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="modal-confirm-titulo" class="text-lg font-bold text-white">Confirmar Ação</h3>
+      <p id="modal-confirm-desc" class="text-xs text-slate-300">Tem certeza que deseja prosseguir?</p>
+      <div class="flex gap-3 pt-2">
+        <button onclick="fecharModalConfirmacao()" class="w-1/2 bg-sesi-navy hover:bg-sesi-primary text-slate-300 text-xs font-semibold py-2.5 rounded-xl border border-sesi-cardBorder transition">
+          Cancelar
+        </button>
+        <button id="btn-modal-confirmar-acao" class="w-1/2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-lg">
+          Sim, Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer class="bg-sesi-navy border-t border-sesi-cardBorder text-center py-4 text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">SESI SENAI Afonso Pena</span>
+        <span>&bull;</span>
+        <span>Aprendizagem Industrial (Sprint 16h / 4 Dias)</span>
+      </div>
+      <p class="text-slate-400">Projeto Firebase: <span class="text-emerald-400 font-mono">sesi-senai-ecotech-2026</span> &bull; Coleção: <span class="text-emerald-400 font-mono">entregas_sesi</span></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT ES MODULE COM FIRESTORE V11 E CREDENCIAIS REAIS DO PROJETO -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // CREDENCIAIS OFICIAIS DO SEU PROJETO FIREBASE
+    const firebaseConfig = {
+      apiKey: "AIzaSyDrmSxY8Z45Fc6C2evERYRJGtp9wHQ1_es",
+      authDomain: "sesi-senai-ecotech-2026.firebaseapp.com",
+      projectId: "sesi-senai-ecotech-2026",
+      storageBucket: "sesi-senai-ecotech-2026.firebasestorage.app",
+      messagingSenderId: "691806316637",
+      appId: "1:691806316637:web:6519afa49bab6124dfc5b4"
+    };
+
+    let app, auth, db;
+    let currentUser = null;
+    let isFirebaseReady = false;
+
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+
+      const initAuth = async () => {
+        try {
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            const userCred = await signInWithCustomToken(auth, __initial_auth_token);
+            currentUser = userCred.user;
+          } else {
+            const userCred = await signInAnonymously(auth);
+            currentUser = userCred.user;
+          }
+          isFirebaseReady = true;
+          atualizarBadgeDatabase(true);
+        } catch (authErr) {
+          console.warn("Autenticação Firestore em modo público:", authErr);
+          atualizarBadgeDatabase(true);
+        }
+      };
+      initAuth();
+    } catch (err) {
+      console.warn("Firebase fallback para localStorage:", err);
+      atualizarBadgeDatabase(false);
+    }
+
+    let equipeSessao = null;
+    let unsubscribeSnapshot = null;
+
+    const NORMES_UC = {
+      "UC01": "UC 01 — Fundamentos da Comunicação e Informação (20h)",
+      "UC02": "UC 02 — Relações Socioprofissionais, Cidadania e Ética (20h)",
+      "UC03": "UC 03 — Saúde e Segurança do Trabalho (20h)",
+      "UC04": "UC 04 — Raciocínio Lógico e Análise de Dados (20h)",
+      "UC05": "UC 05 — Transformação Digital no Setor Industrial (20h)",
+      "UC06": "UC 06 — Planejamento e Organização do Trabalho (20h)",
+      "UC07": "UC 07 — Fundamentos da Administração (80h)",
+      "UC08": "UC 08 — Gestão de Pessoas (80h)",
+      "UC09": "UC 09 — Marketing, Comercial e Vendas (80h)",
+      "UC10": "UC 10 — Gestão Contábil e Financeira (80h)",
+      "UC11": "UC 11 — Gestão da Produção, Operações e Logística (80h)",
+      "UC12": "UC 12 — Tratamento e Gerenciamento de Dados Quantitativos (80h)"
+    };
+
+    function obterSetorFabrica(nomeEquipe) {
+      if (!nomeEquipe || nomeEquipe.trim() === '') return null;
+      let hash = 0;
+      const str = nomeEquipe.toUpperCase().trim();
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const index = Math.abs(hash) % 4;
+
+      const setores = [
+        {
+          id: 'A',
+          nome: 'Setor A: Linha de Montagem e Usinagem (Robótica)',
+          icone: 'fa-robot',
+          bgClass: 'bg-blue-950/40 border-blue-600/40 text-blue-200',
+          badgeClass: 'bg-blue-600 text-white',
+          desc: 'Linha automatizada com tornos CNC, braços robóticos Kuka e células flexíveis de usinagem.'
+        },
+        {
+          id: 'B',
+          nome: 'Setor B: Logística & Almoxarifado Inteligente',
+          icone: 'fa-boxes-packing',
+          bgClass: 'bg-cyan-950/40 border-cyan-600/40 text-cyan-200',
+          badgeClass: 'bg-cyan-600 text-white',
+          desc: 'Gestão de materiais, sensores RFID no estoque, picking, packing e expedição de produtos.'
+        },
+        {
+          id: 'C',
+          nome: 'Setor C: Recursos Humanos & Segurança do Trabalho',
+          icone: 'fa-user-group',
+          bgClass: 'bg-sky-950/40 border-sky-600/40 text-sky-200',
+          badgeClass: 'bg-sky-600 text-white',
+          desc: 'Gestão de pessoas, recrutamento sem viés, controle de ponto, LGPD e clima organizacional.'
+        },
+        {
+          id: 'D',
+          nome: 'Setor D: Manutenção & Eficiência Energética',
+          icone: 'fa-bolt',
+          bgClass: 'bg-indigo-950/40 border-indigo-600/40 text-indigo-200',
+          badgeClass: 'bg-indigo-600 text-white',
+          desc: 'Manutenção preditiva com IoT, subestação elétrica, redes pneumáticas e gestão de utilidades.'
+        }
+      ];
+
+      return setores[index];
+    }
+
+    function obterDossieAmpliado(uc, setorId) {
+      const repositorio = {
+        "UC11": {
+          "A": {
+            cod: "AUD-2026-UC11-A",
+            titulo: "O Caos na Linha 4.0: Gargalo de Abastecimento, Parada de Robôs e Refugo de R$ 38.500",
+            resumo: "A célula robótica de usinagem perde 3,5 horas diárias por falta de materiais. Na tentativa de compensar a meta, o operador descalibrou o CNC, colidindo a garra e inutilizando 14 lotes de alumínio.",
+            detalhes: `
+              <div class="space-y-4 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-4 rounded-xl border border-sky-500/30 space-y-2">
+                  <h5 class="font-bold text-sky-400 text-sm mb-1">📖 Estudo de Caso Narrativo Completo (Logística & Produção):</h5>
+                  <p class="text-slate-200">
+                    Na Fábrica EcoTech, a célula automatizada de usinagem (Setor A) opera com tornos CNC verticais e robôs industriais. O relatório de auditoria indicou um <strong>OEE de apenas 54%</strong>. O desabastecimento de matéria-prima faz com que os operadores percam <strong>3,5 horas por dia</strong> deslocados até o almoxarifado central.
+                  </p>
+                  <p class="text-slate-200">
+                    Para forçar a produção, o avanço da ferramenta CNC foi alterado sem recalibrar sensores. O resultado foi uma colisão de garra robótica e a perda de <strong>14 lotes de alumínio especial, gerando um prejuízo de R$ 38.500,00 em refugo</strong>.
+                  </p>
+                </div>
+              </div>`
+          },
+          "B": {
+            cod: "AUD-2026-UC11-B",
+            titulo: "Avalanche de Papelão e Expedição Paralisada: Indicador OTIF em 68%",
+            resumo: "O almoxarifado descarta 3.200 caixas de papelão descartáveis por dia e possui acuracidade de estoque de apenas 72%, resultando em atrasos contratuais de entregas aos clientes.",
+            detalhes: `<p class="text-slate-200">O Setor B consome 3.200 caixas de papelão novas por dia para transportar peças entre galpões. Além do custo ecológico de R$ 18.400,00/mês, a divergência de estoque faz o indicador OTIF despencar para 68%.</p>`
+          }
+        },
+        "UC08": {
+          "A": {
+            cod: "AUD-2026-UC08-A",
+            titulo: "O Dilema dos Braços Robóticos: Demissão em Massa ou Requalificação 4.0?",
+            resumo: "A chegada de 4 robôs ameaça a demissão de 12 operários antigos. O RH deve criar um plano de Upskilling no SENAI para requalificar a equipe em automação.",
+            detalhes: `<p class="text-slate-200">A equipe financeira sugere a demissão imediata de 12 operários antigos (incluindo o Seu Antenor, de 58 anos). O RH precisa provar que os custos de demissão rescisória (R$ 185.000) superam os custos do curso de Upskilling no SENAI (R$ 32.000).</p>`
+          },
+          "C": {
+            cod: "AUD-2026-UC08-C",
+            titulo: "O Viés da Inteligência Artificial e a Exclusão dos Técnicos do SENAI",
+            resumo: "Um software de IA descartou automaticamente currículos de formandos do SENAI por falta de diploma universitário de elite, contratando candidatos sem aptidão prática.",
+            detalhes: `<p class="text-slate-200">A auditoria no RH revelou discriminação algorítmica: o software contratado rejeitava 100% de técnicos industriais do SENAI. A equipe deve reformular a seleção por competências práticas e adequar o processo à LGPD.</p>`
+          }
+        },
+        "UC10": {
+          "A": {
+            cod: "AUD-2026-UC10-A",
+            titulo: "Desequilíbrio do Ponto de Equilíbrio e Desperdício de Sucata no Setor A",
+            resumo: "Custos fixos elevados com energia e refugo não contabilizado estão empurrando a margem de contribuição do setor para o terreno negativo.",
+            detalhes: `<p class="text-slate-200">A equipe contábil detectou que cada peça produzida carrega R$ 42,00 em custos invisíveis de refugo de metal. O objetivo é recalcular a Margem de Contribuição e propor o Payback do projeto de reciclagem interna.</p>`
+          }
+        },
+        "UC03": {
+          "D": {
+            cod: "AUD-2026-UC03-D",
+            titulo: "Sobreaquecimento da Subestação Elétrica e Risco Ergonômico Grave",
+            resumo: "Alerta de temperatura a 115°C é ignorado por pressão de bônus, enquanto a manutenção realiza transporte manual de transformadores de 35 kg sem equipamento ergonômico.",
+            detalhes: `<p class="text-slate-200">Auditoria em Saúde e Segurança constatou violação da NR-17 e NR-10 na manutenção. A consultoria deve implementar o GRO/PGR e assegurar a Política de Direito de Recusa do trabalhador.</p>`
+          }
+        }
+      };
+
+      if (repositorio[uc] && repositorio[uc][setorId]) {
+        return repositorio[uc][setorId];
+      }
+      return {
+        cod: `AUD-2026-${uc}-${setorId}`,
+        titulo: `Estudo de Caso Auditado: Desafios do Setor ${setorId} em ${uc}`,
+        resumo: `Investigação de gargalos de processos, custos e sustentabilidade no Setor ${setorId} para a Unidade Curricular selecionada.`,
+        detalhes: `<p class="text-slate-200">O setor apresenta oportunidades de otimização operacional, cumprimento legal de regras de sustentabilidade (ESG) e melhorias continuadas na gestão.</p>`
+      };
+    }
+
+    function atualizarPreviewSetor(valor) {
+      const txt = document.getElementById('txt-preview-setor');
+      const setor = obterSetorFabrica(valor);
+      if (setor) {
+        txt.innerHTML = `<i class="fa-solid ${setor.icone} text-sky-400 mr-1"></i> <strong>${setor.nome}</strong>`;
+      } else {
+        txt.innerText = 'Digite o nome da equipe para sortear o setor da fábrica...';
+      }
+    }
+
+    function atualizarBadgeDatabase(ativo) {
+      const badge = document.getElementById('badge-db-status');
+      const txt = document.getElementById('txt-db-status');
+      if (!badge || !txt) return;
+
+      if (ativo) {
+        badge.className = "hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-800";
+        txt.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-1"></span>Firestore: sesi-senai-ecotech-2026`;
+      } else {
+        badge.className = "hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-950 text-amber-300 border border-amber-800";
+        txt.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 mr-1"></span>Modo Local Híbrido`;
+      }
+    }
+
+    function showToast(mensagem, tipo = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const cores = {
+        success: 'bg-emerald-950 border-emerald-700 text-emerald-200',
+        error: 'bg-red-950 border-red-700 text-red-200',
+        info: 'bg-sesi-navy border-sesi-cardBorder text-slate-200',
+        warning: 'bg-amber-950 border-amber-700 text-amber-200'
+      };
+
+      const icones = {
+        success: 'fa-circle-check text-emerald-400',
+        error: 'fa-circle-xmark text-red-400',
+        info: 'fa-circle-info text-sky-400',
+        warning: 'fa-triangle-exclamation text-amber-400'
+      };
+
+      toast.className = `p-3.5 sm:p-4 rounded-xl border shadow-xl text-xs flex items-center gap-3 transition duration-300 transform translate-y-2 pointer-events-auto ${cores[tipo] || cores.info}`;
+      toast.innerHTML = `
+        <i class="fa-solid ${icones[tipo] || icones.info} text-base"></i>
+        <div class="flex-grow font-medium leading-tight">${mensagem}</div>
+        <button onclick="this.parentElement.remove()" class="opacity-60 hover:opacity-100 p-1"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // OPERAÇÃO CLOUD FIRESTORE DIRECT NA COLEÇÃO `entregas_sesi`
+    async function salvarRegistroNuvem(idDoc, dados) {
+      localStorage.setItem(`sesi_ecotech_16h_${idDoc}`, JSON.stringify(dados));
+      if (!db) return;
+
+      try {
+        const docRef = doc(db, 'entregas_sesi', idDoc);
+        await setDoc(docRef, dados, { merge: true });
+      } catch (e) {
+        console.warn("Envio direto Firestore pendente, salvo localmente:", e);
+      }
+    }
+
+    async function buscarRegistroNuvem(idDoc) {
+      if (db) {
+        try {
+          const docRef = doc(db, 'entregas_sesi', idDoc);
+          const snap = await getDoc(docRef);
+          if (snap.exists()) {
+            return snap.data();
+          }
+        } catch (e) {
+          console.warn("Consulta Firestore offline, buscando no LocalStorage:", e);
+        }
+      }
+      const local = localStorage.getItem(`sesi_ecotech_16h_${idDoc}`);
+      return local ? JSON.parse(local) : null;
+    }
+
+    window.iniciarMissaoEstudante = async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-iniciar-sprint');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-lg"></i> Sincronizando Firestore...`;
+
+      const uc = document.getElementById('sel-uc').value;
+      const turno = document.getElementById('sel-turno').value;
+      const turma = document.getElementById('sel-turma').value;
+      const equipe = document.getElementById('inp-equipe').value.toUpperCase().trim();
+
+      const integrantes = [
+        document.getElementById('int-1').value,
+        document.getElementById('int-2').value,
+        document.getElementById('int-3').value,
+        document.getElementById('int-4').value,
+        document.getElementById('int-5').value
+      ].filter(i => i.trim() !== "");
+
+      if (integrantes.length === 0) {
+        showToast("Preencha ao menos o nome do primeiro integrante.", "warning");
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Entrar / Sincronizar Projeto da Equipe`;
+        return;
+      }
+
+      const setorObj = obterSetorFabrica(equipe);
+      const idDoc = `${uc}_${turno}_${turma}_${equipe}`;
+      const chaveTurma = `${uc}_${turno}_${turma}`;
+
+      let dadosNuvem = await buscarRegistroNuvem(idDoc);
+
+      if (dadosNuvem) {
+        equipeSessao = dadosNuvem;
+        showToast(`Dados sincronizados com sucesso para a equipe ${equipe}!`, "info");
+      } else {
+        equipeSessao = {
+          idDoc,
+          chaveTurma,
+          uc,
+          turno,
+          turma,
+          equipe,
+          setorId: setorObj.id,
+          setorNome: setorObj.nome,
+          integrantes,
+          bloqueado: false,
+          dia1: { concluido: false, respostas: {} },
+          dia2: { concluido: false, respostas: {} },
+          dia3: { concluido: false, respostas: {} },
+          dia4: { concluido: false, respostas: {} }
+        };
+        await salvarRegistroNuvem(idDoc, equipeSessao);
+        showToast(`Equipe ${equipe} alocada no ${setorObj.nome}!`, "success");
+      }
+
+      // ASSINATURA FIRESTORE SNAPSHOT EM TEMPO REAL NA COLEÇÃO `entregas_sesi`
+      if (db) {
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
+        const docRef = doc(db, 'entregas_sesi', idDoc);
+        unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            equipeSessao = docSnap.data();
+            renderizarPainelDesafio();
+          }
+        }, (err) => console.warn("Listener Firestore status:", err));
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-lg"></i> Entrar / Sincronizar Projeto da Equipe`;
+      renderizarPainelDesafio();
+    };
+
+    function renderizarPainelDesafio() {
+      document.getElementById('sec-identificacao').classList.add('hidden');
+      document.getElementById('sec-desafio').classList.remove('hidden');
+      document.getElementById('btn-header-dossie').classList.remove('hidden');
+
+      document.getElementById('badge-uc-titulo').innerText = NORMES_UC[equipeSessao.uc] || equipeSessao.uc;
+      document.getElementById('txt-equipe-titulo').innerText = `EQUIPE: ${equipeSessao.equipe}`;
+      document.getElementById('txt-turma-sub').innerText = `Turma: ${equipeSessao.turma} (${equipeSessao.turno}) | Integrantes: ${equipeSessao.integrantes.join(", ")}`;
+
+      const boxBloqueado = document.getElementById('box-bloqueado');
+      const formMissao = document.getElementById('form-missao');
+      const bannerSetor = document.getElementById('banner-setor-atribuido');
+      const cardDossieTopo = document.getElementById('card-dossie-topo');
+
+      if (equipeSessao.bloqueado) {
+        boxBloqueado.classList.remove('hidden');
+        formMissao.classList.add('hidden');
+        bannerSetor.classList.add('hidden');
+        cardDossieTopo.classList.add('hidden');
+        return;
+      } else {
+        boxBloqueado.classList.add('hidden');
+        formMissao.classList.remove('hidden');
+        bannerSetor.classList.remove('hidden');
+        cardDossieTopo.classList.remove('hidden');
+      }
+
+      const setorObj = obterSetorFabrica(equipeSessao.equipe);
+      bannerSetor.className = `rounded-2xl p-4 sm:p-6 border shadow-lg ${setorObj.bgClass}`;
+      bannerSetor.innerHTML = `
+        <div class="flex items-start gap-3 sm:gap-4">
+          <div class="p-3 ${setorObj.badgeClass} rounded-xl text-lg sm:text-xl hidden sm:block">
+            <i class="fa-solid ${setorObj.icone}"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-sky-400 block mb-1">
+              <i class="fa-solid fa-building-user"></i> Departamento Atribuído para Consultoria
+            </span>
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid ${setorObj.icone} sm:hidden"></i> ${setorObj.nome}
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mt-1">
+              ${setorObj.desc} Toda a investigação da equipe será focada neste cenário industrial específico.
+            </p>
+          </div>
+        </div>
+      `;
+
+      const dossie = obterDossieAmpliado(equipeSessao.uc, setorObj.id);
+      if (dossie) {
+        cardDossieTopo.innerHTML = `
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <span class="text-[10px] font-bold text-sky-300 uppercase tracking-widest flex items-center gap-1.5">
+                <i class="fa-solid fa-file-contract text-yellow-300"></i> Estudo de Caso Auditado (Dossiê EcoTech)
+              </span>
+              <h4 class="text-xs sm:text-sm font-bold text-white">${dossie.cod} — ${dossie.titulo}</h4>
+              <p class="text-xs text-slate-300 line-clamp-2">${dossie.resumo}</p>
+            </div>
+            <button type="button" onclick="abrirModalDossie()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-sky-400/50 transition whitespace-nowrap shadow-md active:scale-95 flex items-center gap-1.5 w-full sm:w-auto justify-center">
+              <i class="fa-solid fa-eye"></i> Ler Dossiê Completo
+            </button>
+          </div>
+        `;
+      }
+
+      // PÍLULAS DE STATUS E DESTRAVAMENTO
+      const pillD1 = document.getElementById('st-pill-dia1');
+      const pillD2 = document.getElementById('st-pill-dia2');
+      const pillD3 = document.getElementById('st-pill-dia3');
+      const pillD4 = document.getElementById('st-pill-dia4');
+
+      const boxF2 = document.getElementById('box-dia2');
+      const boxF3 = document.getElementById('box-dia3');
+      const boxF4 = document.getElementById('box-dia4');
+
+      const badgeLockF2 = document.getElementById('badge-lock-dia2');
+      const badgeLockF3 = document.getElementById('badge-lock-dia3');
+      const badgeLockF4 = document.getElementById('badge-lock-dia4');
+
+      if (equipeSessao.dia1 && equipeSessao.dia1.concluido) {
+        pillD1.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1";
+        pillD1.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Dia 1 OK`;
+
+        boxF2.classList.remove('opacity-60', 'pointer-events-none');
+        badgeLockF2.className = "text-xs bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full border border-amber-500/30 w-fit";
+        badgeLockF2.innerHTML = `<i class="fa-solid fa-unlock"></i> Liberado`;
+      } else {
+        pillD1.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-300 border border-sesi-cardBorder flex items-center gap-1";
+        pillD1.innerHTML = `<i class="fa-solid fa-clock text-amber-400"></i> Dia 1: Em Andamento`;
+
+        boxF2.classList.add('opacity-60', 'pointer-events-none');
+        badgeLockF2.className = "text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit";
+        badgeLockF2.innerHTML = `<i class="fa-solid fa-lock"></i> Bloqueado (Conclua Dia 1)`;
+      }
+
+      if (equipeSessao.dia2 && equipeSessao.dia2.concluido) {
+        pillD2.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1";
+        pillD2.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Dia 2 OK`;
+
+        boxF3.classList.remove('opacity-60', 'pointer-events-none');
+        badgeLockF3.className = "text-xs bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full border border-purple-500/30 w-fit";
+        badgeLockF3.innerHTML = `<i class="fa-solid fa-unlock"></i> Liberado`;
+      } else {
+        pillD3.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1";
+        boxF3.classList.add('opacity-60', 'pointer-events-none');
+        badgeLockF3.className = "text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit";
+        badgeLockF3.innerHTML = `<i class="fa-solid fa-lock"></i> Bloqueado (Conclua Dia 2)`;
+      }
+
+      if (equipeSessao.dia3 && equipeSessao.dia3.concluido) {
+        pillD3.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1";
+        pillD3.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Dia 3 OK`;
+
+        boxF4.classList.remove('opacity-60', 'pointer-events-none');
+        badgeLockF4.className = "text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30 w-fit";
+        badgeLockF4.innerHTML = `<i class="fa-solid fa-unlock"></i> Liberado para Banca`;
+      } else {
+        pillD4.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1";
+        boxF4.classList.add('opacity-60', 'pointer-events-none');
+        badgeLockF4.className = "text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit";
+        badgeLockF4.innerHTML = `<i class="fa-solid fa-lock"></i> Bloqueado (Conclua Dia 3)`;
+      }
+
+      if (equipeSessao.dia4 && equipeSessao.dia4.concluido) {
+        pillD4.className = "text-[11px] px-2.5 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1";
+        pillD4.innerHTML = `<i class="fa-solid fa-microphone text-emerald-400"></i> Banca OK`;
+      }
+
+      montarFormularioEspecifico(equipeSessao.uc, setorObj.id);
+    }
+
+    function montarFormularioEspecifico(uc, setorId) {
+      const d1 = document.getElementById('conteudo-dia1');
+      const d2 = document.getElementById('conteudo-dia2');
+      const d3 = document.getElementById('conteudo-dia3');
+
+      if (uc === "UC10") {
+        d1.innerHTML = `
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">1.1 Mapeamento de Custos Fixos e Variáveis do Setor:</label>
+            <textarea id="q1_d1" rows="3" required placeholder="Custos Fixos (Mão de Obra, Depreciação) vs Custos Variáveis (Matéria-prima, Energia)..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+          </div>
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">1.2 Diagnóstico Financeiro dos Desperdícios (Perdas e Refugo):</label>
+            <textarea id="q2_d1" rows="3" required placeholder="Apurar o valor em R$ das perdas operacionais descritas no Dossiê..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+          </div>
+        `;
+
+        d2.innerHTML = `
+          <details class="bg-[#001222] border border-amber-500/40 rounded-xl overflow-hidden group" open>
+            <summary class="p-3.5 bg-sesi-navy flex justify-between items-center cursor-pointer select-none font-bold text-amber-400 text-xs">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-calculator"></i> Teoria & Fórmulas: Ponto de Equilíbrio (PE) e Eco-ROI</span>
+              <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="p-4 space-y-2 text-xs text-slate-300 border-t border-amber-500/30">
+              <div class="p-2.5 bg-sesi-navy rounded border border-sesi-cardBorder font-mono text-amber-300 space-y-1">
+                <div>1. PE (unid) = Custos Fixos / (Preço Venda - Custo Variável)</div>
+                <div>2. Payback (Meses) = Investimento Inicial / Economia Mensal Gerada</div>
+              </div>
+            </div>
+          </details>
+
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">2.1 Memória de Cálculo do Ponto de Equilíbrio e Eco-ROI:</label>
+            <textarea id="q1_d2" rows="3" placeholder="Insira o cálculo do PE e do tempo de retorno do investimento ambiental..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+          </div>
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">2.2 POP de Controle Orçamentário e Redução de Gastos:</label>
+            <textarea id="q2_d2" rows="3" placeholder="Procedimento oficial para autorização de despesas e prevenção de desperdícios..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+          </div>
+        `;
+
+        d3.innerHTML = `
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">3.1 Demonstrativo de Resultados Simulado (DRE Verde):</label>
+            <textarea id="q1_d3" rows="3" placeholder="Apresente a projeção da DRE demonstrando a receita obtida com venda de recicláveis..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-purple-400 focus:outline-none"></textarea>
+          </div>
+        `;
+      } else {
+        d1.innerHTML = `
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">1.1 Diagnóstico de Processos & Mapeamento SIPOC / Organograma:</label>
+            <textarea id="q1_d1" rows="3" required placeholder="Mapeie os elementos principais do processo do seu setor (Fornecedores, Entradas, Etapas, Saídas e Clientes)..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+          </div>
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">1.2 Análise de Causa-Raiz (Ishikawa / 5 Porquês):</label>
+            <textarea id="q2_d1" rows="3" required placeholder="Investigação de causas considerando Máquina, Mão de Obra, Método e Material..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+          </div>
+        `;
+
+        d2.innerHTML = `
+          <details class="bg-[#001222] border border-amber-500/40 rounded-xl overflow-hidden group" open>
+            <summary class="p-3.5 bg-sesi-navy flex justify-between items-center cursor-pointer select-none font-bold text-amber-400 text-xs">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-calculator"></i> Teoria & Fórmulas: Dimensionamento & Ecoeficiência</span>
+              <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="p-4 space-y-2 text-xs text-slate-300 border-t border-amber-500/30">
+              <div class="p-2.5 bg-sesi-navy rounded border border-sesi-cardBorder font-mono text-amber-300 space-y-1">
+                <div>1. PR / Absenteísmo / Taxa de Turnover conforme a UC</div>
+                <div>2. Emissão Evitada de CO2 (kg) = Qtd Substituída × Fator de Emissão (0,45 kg/un)</div>
+              </div>
+            </div>
+          </details>
+
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">2.1 Memória de Cálculo Operacional e Ecoeficiência:</label>
+            <textarea id="q1_d2" rows="3" placeholder="Insira a memória de cálculo da solução..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+          </div>
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">2.2 POP (Procedimento Operacional Padrão) e Matriz 5W2H:</label>
+            <textarea id="q2_d2" rows="3" placeholder="Redija o POP e descreva o plano de ação (5W2H)..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+          </div>
+        `;
+
+        d3.innerHTML = `
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-200">3.1 Painel de KPIs ESG, Gestão Visual e Transição Justa:</label>
+            <textarea id="q1_d3" rows="3" placeholder="Descreva os indicadores do setor e a proposta de valorização humana..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-purple-400 focus:outline-none"></textarea>
+          </div>
+        `;
+      }
+
+      if (equipeSessao.dia1 && equipeSessao.dia1.respostas) {
+        if (document.getElementById('q1_d1')) document.getElementById('q1_d1').value = equipeSessao.dia1.respostas.q1 || '';
+        if (document.getElementById('q2_d1')) document.getElementById('q2_d1').value = equipeSessao.dia1.respostas.q2 || '';
+      }
+
+      if (equipeSessao.dia2 && equipeSessao.dia2.respostas) {
+        if (document.getElementById('q1_d2')) document.getElementById('q1_d2').value = equipeSessao.dia2.respostas.q1 || '';
+        if (document.getElementById('q2_d2')) document.getElementById('q2_d2').value = equipeSessao.dia2.respostas.q2 || '';
+      }
+
+      if (equipeSessao.dia3 && equipeSessao.dia3.respostas) {
+        if (document.getElementById('q1_d3')) document.getElementById('q1_d3').value = equipeSessao.dia3.respostas.q1 || '';
+      }
+
+      if (equipeSessao.dia4 && equipeSessao.dia4.respostas) {
+        if (document.getElementById('q1_d4')) document.getElementById('q1_d4').value = equipeSessao.dia4.respostas.q1 || '';
+      }
+    }
+
+    window.salvarRespostasEstudante = async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-salvar-resposta');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...`;
+
+      const q1_d1 = document.getElementById('q1_d1') ? document.getElementById('q1_d1').value.trim() : '';
+      const q2_d1 = document.getElementById('q2_d1') ? document.getElementById('q2_d1').value.trim() : '';
+
+      const q1_d2 = document.getElementById('q1_d2') ? document.getElementById('q1_d2').value.trim() : '';
+      const q2_d2 = document.getElementById('q2_d2') ? document.getElementById('q2_d2').value.trim() : '';
+
+      const q1_d3 = document.getElementById('q1_d3') ? document.getElementById('q1_d3').value.trim() : '';
+      const q1_d4 = document.getElementById('q1_d4') ? document.getElementById('q1_d4').value.trim() : '';
+
+      const agora = new Date().toLocaleString("pt-BR");
+
+      if (q1_d1 !== '') {
+        equipeSessao.dia1 = { concluido: true, dataEnvio: agora, respostas: { q1: q1_d1, q2: q2_d1 } };
+      }
+      if (q1_d2 !== '') {
+        equipeSessao.dia2 = { concluido: true, dataEnvio: agora, respostas: { q1: q1_d2, q2: q2_d2 } };
+      }
+      if (q1_d3 !== '') {
+        equipeSessao.dia3 = { concluido: true, dataEnvio: agora, respostas: { q1: q1_d3 } };
+      }
+      if (q1_d4 !== '') {
+        equipeSessao.dia4 = { concluido: true, dataEnvio: agora, respostas: { q1: q1_d4 } };
+      }
+
+      await salvarRegistroNuvem(equipeSessao.idDoc, equipeSessao);
+
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-base"></i> <span>Salvar & Sincronizar Entregas no Firestore</span>`;
+      showToast("Entregas salvas e sincronizadas na nuvem com sucesso!", "success");
+      renderizarPainelDesafio();
+    };
+
+    window.abrirModalDossie = function(ucParam, setorIdParam, equipeNomeParam) {
+      let uc = ucParam;
+      let setorId = setorIdParam;
+      let nomeEquipe = equipeNomeParam;
+
+      if (!uc || !setorId) {
+        if (!equipeSessao) {
+          showToast("Identifique a equipe primeiro para abrir o dossiê.", "warning");
+          return;
+        }
+        uc = equipeSessao.uc;
+        const setorObj = obterSetorFabrica(equipeSessao.equipe);
+        setorId = setorObj.id;
+        nomeEquipe = equipeSessao.equipe;
+      }
+
+      const dossie = obterDossieAmpliado(uc, setorId);
+
+      if (dossie) {
+        document.getElementById('modal-dossie-titulo').innerText = `${dossie.cod} — ${dossie.titulo} ${nomeEquipe ? `(Equipe: ${nomeEquipe})` : ''}`;
+        document.getElementById('modal-dossie-corpo').innerHTML = `
+          <div class="p-3.5 sm:p-4 rounded-xl bg-[#001222] border border-sesi-cardBorder space-y-2">
+            <span class="text-[10px] font-bold uppercase text-sky-400 tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-book-open text-yellow-300"></i> Estudo de Caso Auditado da Fábrica EcoTech
+            </span>
+            <p class="text-xs text-slate-100 font-medium leading-relaxed italic">${dossie.resumo}</p>
+          </div>
+          <div class="p-3.5 sm:p-4 rounded-xl bg-sesi-navy/80 border border-sesi-cardBorder space-y-2">
+            <span class="text-[10px] font-bold uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-scroll"></i> História do Caso & Evidências de Campo
+            </span>
+            ${dossie.detalhes}
+          </div>
+        `;
+        document.getElementById('modal-dossie-fabrica').classList.remove('hidden');
+      }
+    };
+
+    window.fecharModalDossie = function() {
+      document.getElementById('modal-dossie-fabrica').classList.add('hidden');
+    };
+
+    window.voltarInicio = function() {
+      document.getElementById('sec-desafio').classList.add('hidden');
+      document.getElementById('sec-professor').classList.add('hidden');
+      document.getElementById('sec-identificacao').classList.remove('hidden');
+      document.getElementById('btn-header-dossie').classList.add('hidden');
+    };
+
+    window.voltarIdentificacao = function() {
+      document.getElementById('sec-desafio').classList.add('hidden');
+      document.getElementById('sec-identificacao').classList.remove('hidden');
+      document.getElementById('btn-header-dossie').classList.add('hidden');
+    };
+
+    window.reiniciarNovoProjeto = function() {
+      equipeSessao = null;
+      window.voltarInicio();
+      showToast("Sessão reiniciada. Inicie a identificação de um novo projeto autoral.", "info");
+    };
+
+    window.abrirModalProfessor = function() {
+      document.getElementById('modal-prof-login').classList.remove('hidden');
+    };
+
+    window.fecharModalProfessor = function() {
+      document.getElementById('modal-prof-login').classList.add('hidden');
+    };
+
+    window.autenticarProfessor = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const senha = document.getElementById('login-senha').value;
+
+      if (email === "ricardohorning@hotmail.com" && senha === "SENAI2026") {
+        window.fecharModalProfessor();
+        document.getElementById('sec-identificacao').classList.add('hidden');
+        document.getElementById('sec-desafio').classList.add('hidden');
+        document.getElementById('sec-professor').classList.remove('hidden');
+        document.getElementById('btn-header-dossie').classList.add('hidden');
+        showToast("Acesso liberado. Bem-vindo, Professor Ricardo!", "success");
+        window.carregarEntregasProfessor();
+      } else {
+        showToast("Credenciais de acesso incorretas.", "error");
+      }
+    };
+
+    window.sairProfessor = function() {
+      document.getElementById('sec-professor').classList.add('hidden');
+      document.getElementById('sec-identificacao').classList.remove('hidden');
+    };
+
+    // FIRESTORE QUERIES DIRETAS EM `entregas_sesi`
+    window.carregarEntregasProfessor = async function() {
+      const uc = document.getElementById('prof-filtro-uc').value;
+      const turno = document.getElementById('prof-filtro-turno').value;
+      const turma = document.getElementById('prof-filtro-turma').value;
+      const chaveTurma = `${uc}_${turno}_${turma}`;
+
+      const container = document.getElementById('lista-equipes-prof');
+      container.innerHTML = `<div class="p-4 text-center text-xs text-sky-400 font-bold"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Buscando entregas no Cloud Firestore...</div>`;
+
+      let entregas = [];
+
+      if (db) {
+        try {
+          const colRef = collection(db, 'entregas_sesi');
+          const snap = await getDocs(colRef);
+          snap.forEach(docSnap => {
+            const data = docSnap.data();
+            if (data.chaveTurma === chaveTurma) {
+              entregas.push(data);
+            }
+          });
+        } catch (e) {
+          console.warn("Erro ao buscar no Firestore, tentando LocalStorage:", e);
+        }
+      }
+
+      if (entregas.length === 0) {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith("sesi_ecotech_16h_")) {
+            try {
+              const item = JSON.parse(localStorage.getItem(key));
+              if (item.chaveTurma === chaveTurma) {
+                entregas.push(item);
+              }
+            } catch (e) {}
+          }
+        }
+      }
+
+      if (entregas.length === 0) {
+        container.innerHTML = `
+          <div class="bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl p-6 sm:p-8 text-center space-y-3">
+            <div class="w-12 h-12 bg-sesi-navy text-slate-500 rounded-full flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h4 class="text-sm font-bold text-slate-200">Nenhuma entrega registrada</h4>
+            <p class="text-xs text-slate-400 max-w-sm mx-auto">
+              Nenhuma equipe da Turma <strong>${turma} (${turno})</strong> para a <strong>${uc}</strong> enviou respostas ainda. Clique em "Gerar Dados de Exemplo" para testar a visualização.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = "";
+
+      entregas.forEach(eq => {
+        const card = document.createElement('div');
+        card.className = "bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl p-4 sm:p-6 space-y-4 shadow-xl";
+
+        const stD1Badge = eq.dia1 && eq.dia1.concluido
+          ? `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> Dia 1</span>`
+          : `<span class="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-clock"></i> Dia 1</span>`;
+
+        const stD2Badge = eq.dia2 && eq.dia2.concluido
+          ? `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> Dia 2</span>`
+          : `<span class="bg-sesi-navy text-slate-500 border border-sesi-cardBorder text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Dia 2</span>`;
+
+        const stD3Badge = eq.dia3 && eq.dia3.concluido
+          ? `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> Dia 3</span>`
+          : `<span class="bg-sesi-navy text-slate-500 border border-sesi-cardBorder text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Dia 3</span>`;
+
+        const stD4Badge = eq.dia4 && eq.dia4.concluido
+          ? `<span class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-microphone"></i> Banca OK</span>`
+          : `<span class="bg-sesi-navy text-slate-500 border border-sesi-cardBorder text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Banca</span>`;
+
+        const bloqueadoBadge = eq.bloqueado
+          ? `<span class="bg-red-950 text-red-300 border border-red-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-ban"></i> BLOQUEADO IA/PLÁGIO</span>`
+          : '';
+
+        const btnBloqueio = eq.bloqueado
+          ? `<button onclick="window.alternarBloqueioEquipe('${eq.idDoc}', false)" class="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/60 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+              <i class="fa-solid fa-unlock"></i> Desbloquear
+             </button>`
+          : `<button onclick="window.alternarBloqueioEquipe('${eq.idDoc}', true)" class="bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800/60 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+              <i class="fa-solid fa-ban"></i> Bloquear (IA)
+             </button>`;
+
+        card.innerHTML = `
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 border-b border-sesi-cardBorder pb-3">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <h4 class="text-base sm:text-lg font-bold text-sky-400 font-mono tracking-wider">EQUIPE: ${eq.equipe}</h4>
+                <span class="text-[10px] bg-sesi-navy text-slate-300 px-2.5 py-0.5 rounded-full border border-sesi-cardBorder font-medium">${eq.setorNome || 'Setor Industrial'}</span>
+                ${bloqueadoBadge}
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Integrantes: <strong class="text-slate-200">${eq.integrantes ? eq.integrantes.join(", ") : 'Não informados'}</strong></p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="flex items-center gap-1 mr-1">
+                ${stD1Badge}
+                ${stD2Badge}
+                ${stD3Badge}
+                ${stD4Badge}
+              </div>
+              <button onclick="window.abrirModalDossie('${eq.uc}', '${eq.setorId || obterSetorFabrica(eq.equipe).id}', '${eq.equipe}')" class="bg-sesi-navy hover:bg-sesi-primary text-sky-300 border border-sky-400/50 text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md">
+                <i class="fa-solid fa-file-contract text-yellow-300"></i> Dossiê
+              </button>
+              <button onclick="window.abrirModalEditarProf('${eq.idDoc}')" class="bg-sky-600 hover:bg-sky-500 text-white border border-sky-400/50 text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
+              ${btnBloqueio}
+              <button onclick="window.excluirEquipe('${eq.idDoc}')" class="bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1">
+                <i class="fa-solid fa-trash-can"></i> Excluir
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+            <div class="bg-[#001222] p-3 rounded-xl border border-sesi-cardBorder space-y-1">
+              <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">Dia 1: Diagnóstico</span>
+              ${eq.dia1 && eq.dia1.respostas ? `<p class="text-slate-300"><strong>P1:</strong> ${eq.dia1.respostas.q1 || '-'}</p>` : '<p class="text-slate-500 italic">Pendente</p>'}
+            </div>
+
+            <div class="bg-[#001222] p-3 rounded-xl border border-sesi-cardBorder space-y-1">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">Dia 2: Solução & POP</span>
+              ${eq.dia2 && eq.dia2.respostas ? `<p class="text-slate-300"><strong>Cálculos:</strong> ${eq.dia2.respostas.q1 || '-'}</p>` : '<p class="text-slate-500 italic">Pendente</p>'}
+            </div>
+
+            <div class="bg-[#001222] p-3 rounded-xl border border-sesi-cardBorder space-y-1">
+              <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">Dia 3: KPIs & Ética</span>
+              ${eq.dia3 && eq.dia3.respostas ? `<p class="text-slate-300"><strong>Kanban/Parecer:</strong> ${eq.dia3.respostas.q1 || '-'}</p>` : '<p class="text-slate-500 italic">Pendente</p>'}
+            </div>
+
+            <div class="bg-[#001222] p-3 rounded-xl border border-sesi-cardBorder space-y-1">
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">Dia 4: Pitch 15m</span>
+              ${eq.dia4 && eq.dia4.respostas ? `<p class="text-slate-300"><strong>Roteiro:</strong> ${eq.dia4.respostas.q1 || '-'}</p>` : '<p class="text-slate-500 italic">Pendente</p>'}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    };
+
+    window.gerarDadosDemonstrativos = async function() {
+      const demoData = [
+        {
+          idDoc: "UC11_M_A_ALPHA1",
+          chaveTurma: "UC11_M_A",
+          uc: "UC11", turno: "M", turma: "A",
+          equipe: "ALPHA1",
+          setorId: "A",
+          setorNome: "Setor A: Linha de Montagem e Usinagem (Robótica)",
+          integrantes: ["Ana Clara Silva", "Bruno Santos", "Carlos Eduardo"],
+          bloqueado: false,
+          dia1: {
+            concluido: true,
+            dataEnvio: "10/11/2026 08:30",
+            respostas: {
+              q1: "S: Almoxarifado Central | I: Tarugos Alumínio | P: Usinagem CNC | O: Caixas Transmissão | C: Montagem",
+              q2: "Causa-raiz: desabastecimento de tarugos e falta de Ponto de Reposição."
+            }
+          },
+          dia2: {
+            concluido: true,
+            dataEnvio: "10/11/2026 09:15",
+            respostas: {
+              q1: "Consumo = 50/dia; LT = 5 dias; ES = 100 un. PR = (50 × 5) + 100 = 350 unidades.",
+              q2: "POP N° 01: Abastecimento fracionado da célula robótica."
+            }
+          },
+          dia3: { concluido: true, respostas: { q1: "Kanban visual com alocação Verde/Amarelo/Vermelho." } },
+          dia4: { concluido: true, respostas: { q1: "Pitch 15 min: Defesa do OEE de 54% para 88%." } }
+        },
+        {
+          idDoc: "UC10_M_A_FINANCE",
+          chaveTurma: "UC10_M_A",
+          uc: "UC10", turno: "M", turma: "A",
+          equipe: "FINANCE",
+          setorId: "A",
+          setorNome: "Setor A: Usinagem e Finanças",
+          integrantes: ["Daniela Lima", "Eduardo Rocha"],
+          bloqueado: false,
+          dia1: { concluido: true, respostas: { q1: "Levantamento de Custos Fixos (R$ 50.000) e Variáveis." } },
+          dia2: { concluido: true, respostas: { q1: "Ponto de Equilíbrio = 500 unidades. Eco-Payback em 4 meses." } },
+          dia3: { concluido: false, respostas: {} },
+          dia4: { concluido: false, respostas: {} }
+        }
+      ];
+
+      for (const item of demoData) {
+        await salvarRegistroNuvem(item.idDoc, item);
+      }
+
+      showToast("Dados de demonstração gerados na nuvem e no dispositivo!", "success");
+      window.carregarEntregasProfessor();
+    };
+
+    let registroEmEdicao = null;
+
+    window.abrirModalEditarProf = async function(idDoc) {
+      registroEmEdicao = await buscarRegistroNuvem(idDoc);
+
+      if (!registroEmEdicao) {
+        showToast("Registro da equipe não localizado.", "error");
+        return;
+      }
+
+      document.getElementById('edit-id-original').value = idDoc;
+      document.getElementById('edit-uc').value = registroEmEdicao.uc || 'UC11';
+      document.getElementById('edit-turno').value = registroEmEdicao.turno || 'M';
+      document.getElementById('edit-turma').value = registroEmEdicao.turma || 'A';
+      document.getElementById('edit-equipe').value = registroEmEdicao.equipe || '';
+
+      const ints = registroEmEdicao.integrantes || [];
+      document.getElementById('edit-int-1').value = ints[0] || '';
+      document.getElementById('edit-int-2').value = ints[1] || '';
+      document.getElementById('edit-int-3').value = ints[2] || '';
+      document.getElementById('edit-int-4').value = ints[3] || '';
+      document.getElementById('edit-int-5').value = ints[4] || '';
+
+      document.getElementById('modal-prof-editar').classList.remove('hidden');
+    };
+
+    window.fecharModalEditarProf = function() {
+      document.getElementById('modal-prof-editar').classList.add('hidden');
+      registroEmEdicao = null;
+    };
+
+    window.salvarEdicaoProfessor = async function(e) {
+      e.preventDefault();
+      if (!registroEmEdicao) return;
+
+      const idOriginal = document.getElementById('edit-id-original').value;
+      const novaUc = document.getElementById('edit-uc').value;
+      const novoTurno = document.getElementById('edit-turno').value;
+      const novaTurma = document.getElementById('edit-turma').value;
+      const novaEquipe = document.getElementById('edit-equipe').value.toUpperCase().trim();
+
+      const setorObj = obterSetorFabrica(novaEquipe);
+
+      const novosIntegrantes = [
+        document.getElementById('edit-int-1').value,
+        document.getElementById('edit-int-2').value,
+        document.getElementById('edit-int-3').value,
+        document.getElementById('edit-int-4').value,
+        document.getElementById('edit-int-5').value
+      ].filter(i => i.trim() !== "");
+
+      const novoIdDoc = `${novaUc}_${novoTurno}_${novaTurma}_${novaEquipe}`;
+      const novaChaveTurma = `${novaUc}_${novoTurno}_${novaTurma}`;
+
+      const registroAtualizado = {
+        ...registroEmEdicao,
+        idDoc: novoIdDoc,
+        chaveTurma: novaChaveTurma,
+        uc: novaUc,
+        turno: novoTurno,
+        turma: novaTurma,
+        equipe: novaEquipe,
+        setorId: setorObj.id,
+        setorNome: setorObj.nome,
+        integrantes: novosIntegrantes
+      };
+
+      if (idOriginal !== novoIdDoc) {
+        localStorage.removeItem(`sesi_ecotech_16h_${idOriginal}`);
+        if (db) {
+          try {
+            await deleteDoc(doc(db, 'entregas_sesi', idOriginal));
+          } catch (err) {}
+        }
+      }
+
+      await salvarRegistroNuvem(novoIdDoc, registroAtualizado);
+
+      window.fecharModalEditarProf();
+      showToast(`Projeto atualizado com sucesso!`, "success");
+      window.carregarEntregasProfessor();
+    };
+
+    window.alternarBloqueioEquipe = function(idDoc, novoStatusBloqueio) {
+      if (novoStatusBloqueio) {
+        abrirModalConfirmacao(
+          "Bloquear Projeto por IA / Plágio",
+          `Deseja BLOQUEAR a entrega da equipe (${idDoc})? Os dados ficam preservados no Firestore para o professor, mas os alunos serão impedidos de avançar.`,
+          async () => {
+            let registro = await buscarRegistroNuvem(idDoc);
+            if (registro) {
+              registro.bloqueado = true;
+              await salvarRegistroNuvem(idDoc, registro);
+            }
+            showToast(`Projeto da equipe ${idDoc} bloqueado!`, "warning");
+            window.carregarEntregasProfessor();
+          },
+          "Sim, Bloquear Projeto",
+          "bg-amber-600 hover:bg-amber-500"
+        );
+      } else {
+        abrirModalConfirmacao(
+          "Desbloquear Projeto",
+          `Deseja DESBLOQUEAR a equipe (${idDoc}) para continuidade normal?`,
+          async () => {
+            let registro = await buscarRegistroNuvem(idDoc);
+            if (registro) {
+              registro.bloqueado = false;
+              await salvarRegistroNuvem(idDoc, registro);
+            }
+            showToast(`Projeto da equipe ${idDoc} desbloqueado com sucesso!`, "success");
+            window.carregarEntregasProfessor();
+          },
+          "Sim, Desbloquear",
+          "bg-emerald-700 hover:bg-emerald-600"
+        );
+      }
+    };
+
+    let confirmacaoAcaoCallback = null;
+
+    function abrirModalConfirmacao(titulo, descricao, callback, textoBotao = "Sim, Confirmar", bgBotao = "bg-red-700 hover:bg-red-600") {
+      document.getElementById('modal-confirm-titulo').innerText = titulo;
+      document.getElementById('modal-confirm-desc').innerText = descricao;
+      
+      const btnConfirmar = document.getElementById('btn-modal-confirmar-acao');
+      btnConfirmar.innerText = textoBotao;
+      btnConfirmar.className = `w-1/2 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-lg ${bgBotao}`;
+
+      confirmacaoAcaoCallback = callback;
+      document.getElementById('modal-confirmacao').classList.remove('hidden');
+
+      btnConfirmar.onclick = async () => {
+        if (confirmacaoAcaoCallback) {
+          await confirmacaoAcaoCallback();
+        }
+        fecharModalConfirmacao();
+      };
+    }
+
+    function fecharModalConfirmacao() {
+      document.getElementById('modal-confirmacao').classList.add('hidden');
+      confirmacaoAcaoCallback = null;
+    }
+
+    window.excluirEquipe = function(idDoc) {
+      abrirModalConfirmacao(
+        "Excluir Equipe",
+        `Tem certeza que deseja EXCLUIR PERMANENTEMENTE a entrega da equipe (${idDoc}) do Firestore e do dispositivo?`,
+        async () => {
+          localStorage.removeItem(`sesi_ecotech_16h_${idDoc}`);
+          if (db) {
+            try {
+              await deleteDoc(doc(db, 'entregas_sesi', idDoc));
+            } catch (e) {}
+          }
+          showToast(`Equipe ${idDoc} excluída com sucesso!`, "success");
+          window.carregarEntregasProfessor();
+        },
+        "Sim, Excluir",
+        "bg-red-700 hover:bg-red-600"
+      );
+    };
+
+    window.excluirTodasEntregasTurmaAtual = function() {
+      const uc = document.getElementById('prof-filtro-uc').value;
+      const turno = document.getElementById('prof-filtro-turno').value;
+      const turma = document.getElementById('prof-filtro-turma').value;
+      const chaveTurma = `${uc}_${turno}_${turma}`;
+
+      abrirModalConfirmacao(
+        "Limpar Turma Atual",
+        `Tem certeza que deseja EXCLUIR PERMANENTEMENTE TODAS as equipes registradas para a Turma ${turma} (${turno}) da ${uc}?`,
+        async () => {
+          if (db) {
+            try {
+              const colRef = collection(db, 'entregas_sesi');
+              const snap = await getDocs(colRef);
+              snap.forEach(async docSnap => {
+                if (docSnap.data().chaveTurma === chaveTurma) {
+                  await deleteDoc(docSnap.ref);
+                }
+              });
+            } catch (e) {}
+          }
+
+          const keysToRemove = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith("sesi_ecotech_16h_")) {
+              try {
+                const item = JSON.parse(localStorage.getItem(key));
+                if (item.chaveTurma === chaveTurma) {
+                  keysToRemove.push(key);
+                }
+              } catch (e) {}
+            }
+          }
+          keysToRemove.forEach(k => localStorage.removeItem(k));
+          showToast(`Todas as entregas da turma foram apagadas.`, "success");
+          window.carregarEntregasProfessor();
+        },
+        "Sim, Excluir Tudo",
+        "bg-red-700 hover:bg-red-600"
+      );
+    };
+
+    // CRONÔMETRO INTERATIVO DA BANCA EXECUTIVA (15 MINUTOS)
+    let timerPitchInterval = null;
+    let timerPitchSegundos = 900;
+
+    function atualizarDisplayTimer() {
+      const min = Math.floor(timerPitchSegundos / 60);
+      const seg = timerPitchSegundos % 60;
+      const strMin = String(min).padStart(2, '0');
+      const strSeg = String(seg).padStart(2, '0');
+      
+      const display = document.getElementById('prof-timer-display');
+      const box = document.getElementById('prof-timer-box');
+      if (!display) return;
+
+      display.innerText = `${strMin}:${strSeg}`;
+
+      if (timerPitchSegundos <= 180 && timerPitchSegundos > 0) {
+        display.className = "font-mono text-4xl sm:text-5xl font-black text-amber-400 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-amber-500/60 pulse-glow";
+        box.className = "bg-gradient-to-r from-amber-950/60 via-sesi-navy to-amber-950/60 rounded-2xl p-5 sm:p-6 border border-amber-500/60 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-5";
+      } else if (timerPitchSegundos === 0) {
+        display.className = "font-mono text-4xl sm:text-5xl font-black text-red-500 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-red-500/80 animate-bounce";
+        box.className = "bg-gradient-to-r from-red-950/80 via-sesi-navy to-red-950/80 rounded-2xl p-5 sm:p-6 border-2 border-red-500 warning-pulse flex flex-col md:flex-row justify-between items-center gap-5";
+      } else {
+        display.className = "font-mono text-4xl sm:text-5xl font-black text-emerald-300 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-emerald-500/40 shadow-inner";
+        box.className = "bg-gradient-to-r from-sesi-navy via-[#0A192F] to-sesi-navy rounded-2xl p-5 sm:p-6 border border-emerald-500/30 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-5";
+      }
+    }
+
+    window.iniciarTimerPitch = function() {
+      if (timerPitchInterval) return;
+      timerPitchInterval = setInterval(() => {
+        if (timerPitchSegundos > 0) {
+          timerPitchSegundos--;
+          atualizarDisplayTimer();
+        } else {
+          window.pausarTimerPitch();
+          showToast("⏱️ Tempo total de 15 minutos esgotado!", "warning");
+        }
+      }, 1000);
+    };
+
+    window.pausarTimerPitch = function() {
+      if (timerPitchInterval) {
+        clearInterval(timerPitchInterval);
+        timerPitchInterval = null;
+      }
+    };
+
+    window.resetarTimerPitch = function() {
+      window.pausarTimerPitch();
+      timerPitchSegundos = 900;
+      atualizarDisplayTimer();
+    };
+  </script>
+</body>
+</html>

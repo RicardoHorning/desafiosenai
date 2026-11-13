@@ -98,7 +98,7 @@
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
     }
 
-    /* Destaque <mark> da palavra-chave na conferência do professor */
+    /* Destaque <mark> da palavra-chave EXCLUSIVO na conferência do professor */
     mark.keyword-hit {
       background: linear-gradient(120deg, #f59e0b 0%, #fbbf24 100%);
       color: #061024;
@@ -477,7 +477,7 @@
       </div>
 
       <!-- ===================================================================
-           NOVO RECURSO: CARD DESTACADO "CONTRATE UM AUDITOR OU ASSISTENTE!"
+           CARD DESTACADO "CONTRATE UM AUDITOR OU ASSISTENTE!"
            Exibido ao vivo sempre que vagaAuditorAtiva === true para a equipe
            =================================================================== -->
       <div id="cardContrateAuditorWorkspace" class="hidden auditor-banner-glow rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-[#1b2238] via-[#172544] to-[#0f294a] border-2 border-amber-400/70">
@@ -607,12 +607,12 @@
       </div>
 
       <!-- ===================================================================
-           CONTEÚDO DIA 1: ESTUDO DE CASO, PALAVRA-CHAVE & DIAGNÓSTICO
+           CONTEÚDO DIA 1: ESTUDO DE CASO LONGO, BUSCA DE PALAVRA & DIAGNÓSTICO
            =================================================================== -->
       <div id="painelDia1" class="space-y-6">
         <!-- Card do Estudo de Caso com Marcadores Exatos -->
         <div class="eco-card rounded-2xl p-5 sm:p-6 space-y-4">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-sky-400/20">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-sky-400/20">
             <div>
               <span class="text-xs font-mono font-bold uppercase text-sky-400">Estudo de Caso Oficial — Planta EcoTech</span>
               <h3 id="d1TituloSetor" class="text-lg sm:text-xl font-extrabold text-white">
@@ -620,23 +620,24 @@
               </h3>
             </div>
 
-            <!-- Palavra-chave determinística sorteada -->
-            <div class="px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-400/40">
-              <div class="text-[11px] font-mono uppercase text-amber-300">🔑 Palavra-Chave de Auditoria (1ª Frase)</div>
-              <div class="flex items-center gap-2 mt-0.5">
-                <span id="d1PalavraChaveDisplay" class="text-base font-mono font-extrabold text-amber-300 tracking-wide">---</span>
-                <span id="d1PosicaoPalavraDisplay" class="text-[11px] font-mono text-amber-200/80">(posição #--)</span>
+            <!-- Missão de Auditoria: Apenas a posição sorteada (palavra NÃO revelada) -->
+            <div class="px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-400/40 max-w-md">
+              <div id="d1MissaoAuditoriaTitulo" class="text-xs sm:text-sm font-mono font-extrabold text-amber-300">
+                🔑 Missão de Auditoria: Localize a Palavra #-- no texto
               </div>
+              <p class="text-[11px] text-amber-100/90 mt-0.5 leading-snug">
+                Conte as palavras a partir do início do texto (▶) e utilize a palavra encontrada na 1ª frase do item 1.1
+              </p>
             </div>
           </div>
 
-          <!-- Texto Delimitado pelos Marcadores Exatos -->
-          <div class="p-4 sm:p-5 rounded-xl bg-[#07142b] border border-sky-400/30 space-y-2">
+          <!-- Texto Delimitado pelos Marcadores Exatos (Sem destaque <mark> para os alunos) -->
+          <div class="p-4 sm:p-5 rounded-xl bg-[#07142b] border border-sky-400/30 space-y-2.5">
             <div class="text-xs font-mono font-bold text-emerald-400 tracking-wider">
               ▶ INÍCIO DO TEXTO DO ESTUDO DE CASO
             </div>
-            <p id="d1TextoEstudoCaso" class="text-sm sm:text-base text-slate-100 leading-relaxed font-medium">
-              <!-- Texto exato do 1º parágrafo do setor -->
+            <p id="d1TextoEstudoCaso" class="text-sm sm:text-base text-slate-100 leading-relaxed font-normal text-justify">
+              <!-- Texto exato e expandido (200+ palavras) do setor -->
             </p>
             <div class="text-xs font-mono font-bold text-rose-400 tracking-wider">
               ■ FIM DO TEXTO DO ESTUDO DE CASO
@@ -662,17 +663,17 @@
                 1.1 Diagnóstico do Setor &amp; Análise de Causa Raiz (Ishikawa / 5 Porquês) *
               </label>
               <span id="statusPalavraChaveDia1" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-400/30">
-                ⚠️ Inclua a palavra-chave na 1ª frase
+                ⚠️ Busque a palavra #-- no estudo de caso e inclua-a na 1ª frase
               </span>
             </div>
             <p class="text-xs text-slate-300 mb-2">
-              <strong>Regra de Auditoria:</strong> Escreva a palavra-chave sorteada obrigatoriamente na <strong>1ª frase</strong> (antes do primeiro ponto final) e explique as causas raiz dos problemas operacionais do setor.
+              <strong>Regra de Auditoria:</strong> Leia atentamente o estudo de caso acima, localize a palavra na posição indicada, escreva-a obrigatoriamente na <strong>1ª frase</strong> (antes do primeiro ponto final) e explique as causas raiz dos problemas operacionais do setor.
             </p>
             <textarea
               id="dia1_diagnostico"
               rows="5"
               oninput="atualizarCampoDossie('dia1_diagnostico', this.value)"
-              placeholder="Inicie sua primeira frase utilizando a palavra-chave sorteada do estudo de caso..."
+              placeholder="Inicie sua primeira frase utilizando a palavra localizada no estudo de caso..."
               class="eco-input w-full px-4 py-3 rounded-xl text-sm leading-relaxed"
             ></textarea>
           </div>
@@ -696,7 +697,7 @@
       </div>
 
       <!-- ===================================================================
-           CONTEÚDO DIA 2: COLA RÁPIDA, CALCULADORA GUIADA & INDÚSTRIA 4.0
+           CONTEÚDO DIA 2: COLA RÁPIDA, CÁLCULOS AUTOMÁTICOS + MANUAIS & 4.0
            =================================================================== -->
       <div id="painelDia2" class="hidden space-y-6">
         <!-- Cola Rápida: Todos os Números do Seu Setor -->
@@ -715,63 +716,183 @@
           </div>
         </div>
 
-        <!-- Calculadora Auxiliar Guiada -->
-        <div class="eco-card rounded-2xl p-5 sm:p-6 border-sky-400/40">
+        <!-- Ferramenta Híbrida de KPIs: Etapa 1 (Automática) + Etapa 2 (Manual pela Equipe) -->
+        <div class="eco-card rounded-2xl p-5 sm:p-6 border-sky-400/40 space-y-6">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-sky-400/20">
             <div>
-              <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Ferramenta de Apoio Matemático</span>
-              <h3 class="text-lg font-extrabold text-white">🧮 Calculadora Auxiliar Guiada de KPIs &amp; ROI</h3>
+              <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Laboratório de Indicadores &amp; Viabilidade Financeira</span>
+              <h3 class="text-lg font-extrabold text-white">🧮 Painel Híbrido de KPIs: Automáticos (Sistema) + Manuais (Equipe)</h3>
               <p class="text-xs text-slate-300 mt-0.5">
-                Simule a disponibilidade, a taxa de falhas, o prejuízo mensal atual e a economia projetada com a Indústria 4.0.
+                O sistema calcula automaticamente os <strong>2 indicadores operacionais (%)</strong> e a equipe calcula manualmente os <strong>2 indicadores financeiros (R$)</strong> usando as fórmulas abaixo.
               </p>
             </div>
-            <button type="button" onclick="preencherCalculadoraComSetor()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow-lg">
-              ⚡ Preencher com os dados do meu setor
+            <button type="button" onclick="preencherCalculadoraComSetor()" class="shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow-lg">
+              ⚡ Carregar Dados do Meu Setor
             </button>
           </div>
 
-          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Turno Disponível (min/dia)</label>
-              <input id="calcTurnoMin" type="number" value="480" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Tempo Perdido / Paradas (min/turno)</label>
-              <input id="calcParadaMin" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Dias Úteis no Mês</label>
-              <input id="calcDiasMes" type="number" value="22" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Produção Total (unidades/turno)</label>
-              <input id="calcProdTotal" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Qtd. Atual com Falha/Refugo (unid/turno)</label>
-              <input id="calcDefeitosAtual" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Custo Unitário da Perda (R$)</label>
-              <input id="calcCustoUnit" type="number" step="0.01" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
-            </div>
-            <div class="sm:col-span-2 lg:col-span-3">
-              <label class="block text-xs font-bold text-emerald-300 mb-1">Meta Pós-Melhoria 4.0 — Falhas/Refugo Projetado (unid/turno)</label>
-              <input id="calcDefeitosMeta" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono border-emerald-400/40" />
+          <!-- Parâmetros Operacionais Base do Setor -->
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-sky-300 mb-3">
+              Parâmetros Operacionais do Setor (Base para ambas as etapas)
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Turno Disponível (min/dia)</label>
+                <input id="calcTurnoMin" type="number" value="480" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Tempo Perdido / Paradas (min/turno)</label>
+                <input id="calcParadaMin" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Dias Úteis no Mês</label>
+                <input id="calcDiasMes" type="number" value="22" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Produção Total (unidades/turno)</label>
+                <input id="calcProdTotal" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Qtd. Falhas / Refugo Atual (unid/turno)</label>
+                <input id="calcDefeitosAtual" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Custo Unitário da Perda (R$)</label>
+                <input id="calcCustoUnit" type="number" step="0.01" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-emerald-300 mb-1">Meta Pós-Melhoria 4.0 — Falhas/Refugo Projetado (unid/turno)</label>
+                <input id="calcDefeitosMeta" type="number" value="0" oninput="recalcularKPIs()" class="eco-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono border-emerald-400/40" />
+              </div>
             </div>
           </div>
 
-          <!-- Resultado da Calculadora -->
-          <div class="mt-4 p-4 rounded-xl bg-[#07142b] border border-sky-400/25 space-y-3">
-            <pre id="calcResultadoTexto" class="text-xs sm:text-sm font-mono text-sky-200 whitespace-pre-wrap leading-relaxed">Clique em "⚡ Preencher com os dados do meu setor" ou digite os valores acima.</pre>
+          <!-- ETAPA 1: CÁLCULOS AUTOMÁTICOS (2 INDICADORES OPERACIONAIS) -->
+          <div class="p-4 sm:p-5 rounded-xl bg-[#07142b] border border-sky-400/30 space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono font-extrabold bg-sky-500/20 text-sky-300 border border-sky-400/40">
+                ETAPA 1 — CÁLCULOS AUTOMÁTICOS (SISTEMA)
+              </span>
+              <span class="text-xs text-slate-400">Calculados automaticamente a partir dos parâmetros acima</span>
+            </div>
 
-            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-sky-400/15">
-              <button type="button" onclick="copiarContaCalculadora()" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition">
-                📋 Copiar esta conta para minha resposta
-              </button>
-              <button type="button" onclick="inserirContaDiretoDia2()" class="px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-400/30 transition">
-                ➕ Inserir direto no campo 2.1 abaixo
-              </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="p-3.5 rounded-xl bg-[#0d1f3d] border border-sky-400/20 space-y-1">
+                <div class="text-xs font-bold text-sky-300">1) Disponibilidade Operacional (%)</div>
+                <div class="text-[11px] font-mono text-slate-400">
+                  Fórmula: ((Turno Disponível − Tempo Perdido) ÷ Turno Disponível) × 100
+                </div>
+                <div id="autoKpiDisponibilidade" class="text-base sm:text-lg font-mono font-extrabold text-white pt-1">
+                  --% (-- min úteis/turno)
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-[#0d1f3d] border border-sky-400/20 space-y-1">
+                <div class="text-xs font-bold text-sky-300">2) Taxa de Falhas / Refugo Atual e Meta 4.0 (%)</div>
+                <div class="text-[11px] font-mono text-slate-400">
+                  Fórmula: (Qtd. Falhas ÷ Produção Total) × 100
+                </div>
+                <div id="autoKpiTaxaFalhas" class="text-base sm:text-lg font-mono font-extrabold text-white pt-1">
+                  Atual: --% • Meta 4.0: --%
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ETAPA 2: CÁLCULOS MANUAIS PELA EQUIPE (2 INDICADORES FINANCEIROS COM FÓRMULAS) -->
+          <div class="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-[#0c1d3a] to-[#08162e] border-2 border-amber-400/50 space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono font-extrabold bg-amber-400 text-slate-950">
+                ETAPA 2 — CÁLCULOS MANUAIS PELA EQUIPE (USE AS FÓRMULAS)
+              </span>
+              <span class="text-xs font-semibold text-amber-200">Calcule na calculadora/papel e insira os resultados abaixo</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <!-- Fórmula 3: Prejuízo Mensal Atual -->
+              <div class="p-4 rounded-xl bg-[#07142b] border border-amber-400/35 flex flex-col justify-between gap-3">
+                <div class="space-y-2">
+                  <div class="text-sm font-extrabold text-amber-300">
+                    3) Prejuízo Mensal Atual (R$)
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-[#0d1f3d] border border-sky-400/20 text-xs font-mono text-sky-200 leading-relaxed">
+                    <strong>Fórmula 3:</strong><br />
+                    Prejuízo Mensal Atual = Qtd. Falhas por Turno × Custo Unitário da Perda (R$) × Dias Úteis no Mês
+                  </div>
+                  <div id="hintFormula3Dados" class="text-xs font-mono text-slate-300">
+                    Dados do seu setor: -- unid/turno × R$ -- × -- dias úteis
+                  </div>
+                </div>
+
+                <div>
+                  <label for="calcManualPrejuizo" class="block text-xs font-bold uppercase tracking-wider text-amber-200 mb-1.5">
+                    Seu cálculo do Prejuízo Mensal Atual (R$) *
+                  </label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-amber-300">R$</span>
+                    <input
+                      id="calcManualPrejuizo"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      oninput="atualizarCalculoManual('dia2_manual_prejuizo', this.value)"
+                      placeholder="Ex: 23760.00"
+                      class="eco-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm font-mono font-bold border-amber-400/40 focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fórmula 4: Economia Mensal Projetada com Indústria 4.0 -->
+              <div class="p-4 rounded-xl bg-[#07142b] border border-emerald-400/35 flex flex-col justify-between gap-3">
+                <div class="space-y-2">
+                  <div class="text-sm font-extrabold text-emerald-300">
+                    4) Economia Mensal Projetada com Indústria 4.0 (R$)
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-[#0d1f3d] border border-sky-400/20 text-xs font-mono text-emerald-200 leading-relaxed">
+                    <strong>Fórmula 4 (2 passos):</strong><br />
+                    1º) Prejuízo Pós-Melhoria = Meta Falhas por Turno × Custo Unitário (R$) × Dias Úteis no Mês<br />
+                    2º) Economia Mensal Projetada = Prejuízo Mensal Atual − Prejuízo Pós-Melhoria
+                  </div>
+                  <div id="hintFormula4Dados" class="text-xs font-mono text-slate-300">
+                    Dados Meta 4.0: -- unid/turno × R$ -- × -- dias úteis
+                  </div>
+                </div>
+
+                <div>
+                  <label for="calcManualEconomia" class="block text-xs font-bold uppercase tracking-wider text-emerald-200 mb-1.5">
+                    Seu cálculo da Economia Mensal Projetada (R$) *
+                  </label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-emerald-300">R$</span>
+                    <input
+                      id="calcManualEconomia"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      oninput="atualizarCalculoManual('dia2_manual_economia', this.value)"
+                      placeholder="Ex: 18810.00"
+                      class="eco-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm font-mono font-bold border-emerald-400/40 focus:border-emerald-400"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botões de Importação e Cópia para o Campo 2.1 -->
+            <div class="pt-3 border-t border-sky-400/20 flex flex-wrap items-center justify-between gap-3">
+              <span class="text-xs text-slate-300">
+                Após preencher os dois valores manuais acima, clique no botão ao lado para gerar a memória de cálculo completa no <strong>Campo 2.1</strong>.
+              </span>
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="importarCalculosParaCampo21()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-emerald-400 to-sky-400 hover:from-emerald-300 hover:to-sky-300 text-slate-950 transition shadow-lg">
+                  📥 Importar Cálculos (Automáticos + Manuais) para o Campo 2.1
+                </button>
+                <button type="button" onclick="copiarContaCalculadora()" class="px-3.5 py-2.5 rounded-xl text-xs font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-400/30 transition">
+                  📋 Copiar Memória
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -780,13 +901,13 @@
         <div class="eco-card rounded-2xl p-5 sm:p-6 space-y-5">
           <div>
             <label for="dia2_calculos" class="block text-sm font-extrabold text-white mb-1.5">
-              2.1 Memória de Cálculo dos Indicadores (Disponibilidade, Perdas e Economia Mensal) *
+              2.1 Memória de Cálculo dos Indicadores (Disponibilidade, Taxa de Falhas, Prejuízo e Economia Mensal) *
             </label>
             <textarea
               id="dia2_calculos"
-              rows="5"
+              rows="7"
               oninput="atualizarCampoDossie('dia2_calculos', this.value)"
-              placeholder="Registre aqui os cálculos realizados para o setor..."
+              placeholder="Importe seus cálculos (Automáticos + Manuais) usando o botão acima ou registre a memória de cálculo completa..."
               class="eco-input w-full px-4 py-3 rounded-xl text-sm font-mono leading-relaxed"
             ></textarea>
           </div>
@@ -852,10 +973,11 @@
       </div>
 
       <!-- ===================================================================
-           CONTEÚDO DIA 4: ROTEIRO DO PITCH (15 MIN) & SÍNTESE FINAL
+           CONTEÚDO DIA 4: ORIENTAÇÃO PASSO A PASSO DO PITCH & SÍNTESE FINAL
            =================================================================== -->
       <div id="painelDia4" class="hidden space-y-6">
         <div class="eco-card rounded-2xl p-5 sm:p-6 space-y-5">
+          <!-- Estrutura Oficial da Banca (15 min) -->
           <div class="p-4 rounded-xl bg-[#07142b] border border-sky-400/20">
             <h3 class="text-sm font-extrabold text-sky-300 uppercase tracking-wider mb-1">
               🎤 Estrutura Oficial da Banca Final (15 Minutos)
@@ -873,15 +995,104 @@
             </div>
           </div>
 
+          <!-- NOVO GUIA DIDÁTICO: ORIENTAÇÃO PASSO A PASSO DE COMO CRIAR O PITCH (5 MINUTOS) -->
+          <div class="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-[#0b1d3b] to-[#08152c] border border-sky-400/35 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-sky-400/20">
+              <div>
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+                  Guia Prático de Estruturação • Apresentação Executiva
+                </span>
+                <h3 class="text-base sm:text-lg font-extrabold text-white mt-0.5">
+                  🎯 Orientação Passo a Passo: Como Criar o Pitch da Equipe (5 Minutos)
+                </h3>
+              </div>
+              <button type="button" onclick="inserirRoteiroBasePitchDia4()" class="shrink-0 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow-lg">
+                📋 Inserir Roteiro-Base (5 Passos) no Campo 4.1
+              </button>
+            </div>
+
+            <!-- Grid dos 5 Passos Cronometrados -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl bg-[#07142b] border border-sky-400/25 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded font-mono font-extrabold bg-sky-500/20 text-sky-300">PASSO 1</span>
+                  <span class="font-mono text-slate-400">0:00 – 1:00</span>
+                </div>
+                <div class="font-extrabold text-white text-sm">Abertura &amp; Gancho</div>
+                <p class="text-slate-300 leading-relaxed">
+                  Prenda a atenção da diretoria logo nos primeiros segundos: apresente a equipe, o setor auditado na EcoTech e o impacto do problema central identificado no <strong>Dia 1</strong>.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-[#07142b] border border-sky-400/25 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded font-mono font-extrabold bg-sky-500/20 text-sky-300">PASSO 2</span>
+                  <span class="font-mono text-slate-400">1:00 – 2:00</span>
+                </div>
+                <div class="font-extrabold text-white text-sm">Diagnóstico &amp; Causa Raiz</div>
+                <p class="text-slate-300 leading-relaxed">
+                  Explique por que o gargalo acontece usando a análise de causa raiz (<strong>Ishikawa / 5 Porquês</strong>) e destaque os desperdícios Lean encontrados (espera, retrabalho, movimentação).
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-[#07142b] border border-sky-400/25 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded font-mono font-extrabold bg-sky-500/20 text-sky-300">PASSO 3</span>
+                  <span class="font-mono text-slate-400">2:00 – 3:15</span>
+                </div>
+                <div class="font-extrabold text-white text-sm">Números da Perda &amp; Solução 4.0</div>
+                <p class="text-slate-300 leading-relaxed">
+                  Mostre os indicadores do <strong>Dia 2</strong> (Disponibilidade, Taxa de Falhas e Prejuízo Mensal Atual) e apresente a tecnologia <strong>Indústria 4.0</strong> escolhida para eliminar o problema.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-[#07142b] border border-sky-400/25 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded font-mono font-extrabold bg-sky-500/20 text-sky-300">PASSO 4</span>
+                  <span class="font-mono text-slate-400">3:15 – 4:15</span>
+                </div>
+                <div class="font-extrabold text-white text-sm">Execução 5W2H, POP &amp; ESG</div>
+                <p class="text-slate-300 leading-relaxed">
+                  Demonstre que o projeto é viável na prática: apresente o plano <strong>5W2H</strong> (prazos, responsáveis e custos), o novo padrão operacional (<strong>POP</strong>) e os ganhos de segurança e <strong>ESG (Dia 3)</strong>.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-[#07142b] border border-emerald-400/35 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded font-mono font-extrabold bg-emerald-500/20 text-emerald-300">PASSO 5</span>
+                  <span class="font-mono text-slate-400">4:15 – 5:00</span>
+                </div>
+                <div class="font-extrabold text-white text-sm">Viabilidade Financeira ROI &amp; Fechamento</div>
+                <p class="text-slate-300 leading-relaxed">
+                  Feche com impacto executivo: compare o prejuízo atual com a <strong>Economia Mensal e Anual</strong> projetada, justifique o retorno do investimento (ROI) e peça a aprovação da diretoria.
+                </p>
+              </div>
+
+              <!-- Dicas Práticas de Apresentação em Equipe -->
+              <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-400/35 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded font-mono font-extrabold bg-amber-400 text-slate-950">DICAS DE EQUIPE</span>
+                  <span class="font-mono text-amber-300">Banca 5+5 min</span>
+                </div>
+                <div class="font-extrabold text-amber-200 text-sm">Postura, Tempo &amp; Arguição</div>
+                <ul class="text-slate-200 space-y-1 list-disc list-inside leading-snug">
+                  <li><strong>Divisão de falas:</strong> distribua os 5 passos entre os integrantes (5 a 7 alunos) sem sobreposição.</li>
+                  <li><strong>Controle de tempo:</strong> ensaie com cronômetro (~1 min por passo) e evite ler o texto palavra por palavra.</li>
+                  <li><strong>Preparação para arguição:</strong> todos devem saber defender os cálculos do Dia 2, custos do 5W2H e riscos.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <div>
             <label for="dia4_pitch" class="block text-sm font-extrabold text-white mb-1.5">
               4.1 Roteiro do Pitch Executivo e Defesa de Viabilidade (ROI) *
             </label>
             <textarea
               id="dia4_pitch"
-              rows="5"
+              rows="7"
               oninput="atualizarCampoDossie('dia4_pitch', this.value)"
-              placeholder="Estruture a fala de cada integrante, os números-chave da apresentação e o tempo de retorno do investimento..."
+              placeholder="Estruture os 5 passos da apresentação, a fala de cada integrante, os números-chave e a defesa do retorno do investimento (ROI)..."
               class="eco-input w-full px-4 py-3 rounded-xl text-sm leading-relaxed"
             ></textarea>
           </div>
@@ -1147,7 +1358,7 @@
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Setor Auditado</label>
-              <select id="editSetor" class="eco-input w-full px-3 py-2 rounded-lg text-sm">
+              <select id="editSetor" onchange="atualizarPreviewKeywordModalProf()" class="eco-input w-full px-3 py-2 rounded-lg text-sm">
                 <option value="A">Setor A — Usinagem CNC</option>
                 <option value="B">Setor B — Montagem Eletrônica</option>
                 <option value="C">Setor C — Intralogística</option>
@@ -1259,8 +1470,8 @@
               <textarea id="editDia1Gargalos" rows="2" class="eco-input w-full px-3 py-2 rounded-lg text-xs sm:text-sm"></textarea>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1">Dia 2.1 — Cálculos de KPIs</label>
-              <textarea id="editDia2Calc" rows="3" class="eco-input w-full px-3 py-2 rounded-lg text-xs sm:text-sm font-mono"></textarea>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Dia 2.1 — Cálculos de KPIs (Automáticos + Manuais)</label>
+              <textarea id="editDia2Calc" rows="4" class="eco-input w-full px-3 py-2 rounded-lg text-xs sm:text-sm font-mono"></textarea>
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1">Dia 2.2 — Solução Tecnológica Indústria 4.0</label>
@@ -1410,15 +1621,15 @@
     }
 
     // =========================================================================
-    // 2. DADOS DOS 4 SETORES AUDITADOS (CONTAGEM EXATA DE PALAVRAS)
-    //    Setor A: 43 palavras | Setor B: 41 | Setor C: 42 | Setor D: 42
-    //    Sem números ou hífens no 1º parágrafo.
+    // 2. DADOS DOS 4 SETORES AUDITADOS (ESTUDOS DE CASO LONGOS: ~200-215 PALAVRAS)
+    //    Prosa contínua, rica em detalhes operacionais, sem números ou hífens
+    //    no parágrafo principal para contagem 100% exata das palavras.
     // =========================================================================
     const SETORES_ECOTECH = {
       A: {
         codigo: "A",
         nome: "Setor A — Usinagem CNC e Corte a Laser",
-        paragrafo1: "A linha de usinagem automatizada enfrenta paradas frequentes nas prensas hidráulicas durante o corte de chapas metálicas devido ao desgaste prematuro das ferramentas e atrasos constantes na troca de matrizes gerando refugo excessivo de componentes estruturais e queda acentuada na eficiência operacional diária.",
+        paragrafo1: "A linha de usinagem automatizada e corte a laser da planta industrial enfrenta paradas frequentes nas prensas hidráulicas e nos centros de torneamento durante o processamento de chapas metálicas estruturais devido ao desgaste prematuro das ferramentas de corte e aos atrasos constantes na troca de matrizes entre lotes distintos. Atualmente os operadores realizam o ajuste mecânico das máquinas de forma totalmente manual sem sensores de vibração ou monitoramento térmico em tempo real o que impede a detecção antecipada de falhas nos eixos principais. Além disso o registro das ordens de produção e dos motivos de parada ainda ocorre em pranchetas de papel ao lado de cada equipamento gerando perda de informações críticas entre os turnos e dificultando a análise rápida pela supervisão. Como consequência direta dessa falta de integração digital a fábrica acumula tempos elevados de preparação de máquina desperdício significativo de matéria prima nobre retrabalho frequente nas peças fora de especificação dimensional e atrasos recorrentes no abastecimento das linhas internas de montagem comprometendo o cumprimento das metas diárias de produtividade e elevando os custos operacionais da unidade fabril. Para agravar o cenário a equipe de manutenção atua apenas de maneira corretiva após a quebra efetiva dos componentes mecânicos provocando filas de espera nos corredores industriais e sobrecarga constante nos turnos seguintes.",
         turnoMin: 480,
         diasMes: 22,
         paradaMin: 96,
@@ -1430,13 +1641,13 @@
           { label: "Turno / Dias Úteis", valor: "480 min/dia • 22 dias/mês", detalhe: "10.560 min disponíveis/mês" },
           { label: "Paradas / Setup Atual", valor: "96 min/turno (20%)", detalhe: "Meta 4.0: reduzir para 36 min" },
           { label: "Produção & Refugo", valor: "160 peças/turno • 24 refugos", detalhe: "Taxa de refugo atual: 15,0%" },
-          { label: "Custo Unitário do Refugo", valor: "R$ 45,00 / peça", detalhe: "Perda: R$ 23.760,00/mês (Meta: 5 unid)" }
+          { label: "Custo Unitário do Refugo", valor: "R$ 45,00 / peça", detalhe: "Meta 4.0: reduzir para 5 refugos" }
         ]
       },
       B: {
         codigo: "B",
         nome: "Setor B — Montagem Eletrônica e Sensores IoT",
-        paragrafo1: "O setor de montagem eletrônica registra gargalos críticos na soldagem de placas inteligentes e sensores industriais causados pela falta de padronização nas bancadas manuais e falhas de rastreabilidade dos lotes provocando retrabalho elevado e atrasos na entrega dos módulos finais certificados.",
+        paragrafo1: "O setor de montagem eletrônica e integração de sensores industriais registra gargalos críticos nas bancadas de soldagem e calibração de placas inteligentes causados pela ausência de instrução visual digitalizada e pela variação constante nos parâmetros manuais aplicados pelos montadores. Durante a fixação dos microcontroladores e conectores de comunicação os operadores dependem exclusivamente de inspeção visual simples sem sistemas automáticos de visão computacional ou dispositivos à prova de falhas para validar a polaridade e a continuidade elétrica antes do fechamento das carcaças. Quando um defeito de solda fria ou montagem invertida passa despercebido pela estação intermediária o módulo segue até o teste final onde precisa ser desmontado manualmente gerando filas extensas de retrabalho e danos irreversíveis em circuitos sensíveis. Além disso a rastreabilidade dos lotes de componentes eletrônicos é feita por digitação manual em planilhas isoladas o que dificulta identificar rapidamente qual fornecedor ou turno originou o desvio técnico. Essa desorganização operacional reduz a capacidade produtiva instalada aumenta o índice de devoluções internas eleva o consumo de insumos de retrabalho e compromete os prazos de entrega dos controladores certificados para os clientes estratégicos da empresa. Sem indicadores em tempo real nos postos de trabalho a liderança percebe os atrasos apenas no encerramento do expediente diário.",
         turnoMin: 480,
         diasMes: 22,
         paradaMin: 84,
@@ -1448,13 +1659,13 @@
           { label: "Turno / Dias Úteis", valor: "480 min/dia • 22 dias/mês", detalhe: "10.560 min disponíveis/mês" },
           { label: "Tempo Perdido Retrabalho", valor: "84 min/turno (17,5%)", detalhe: "Meta 4.0: reduzir para 20 min" },
           { label: "Produção & Retrabalho", valor: "240 módulos • 30 retrabalhos", detalhe: "Taxa de falha atual: 12,5%" },
-          { label: "Custo Unitário Retrabalho", valor: "R$ 32,00 / módulo", detalhe: "Perda: R$ 21.120,00/mês (Meta: 6 unid)" }
+          { label: "Custo Unitário Retrabalho", valor: "R$ 32,00 / módulo", detalhe: "Meta 4.0: reduzir para 6 módulos" }
         ]
       },
       C: {
         codigo: "C",
         nome: "Setor C — Intralogística, Almoxarifado e Expedição",
-        paragrafo1: "A operação de intralogística e expedição sofre com rupturas frequentes no abastecimento das células produtivas devido a divergências de inventário no almoxarifado central e movimentação manual desordenada de paletes aumentando o tempo de separação dos pedidos e os custos internos de armazenagem.",
+        paragrafo1: "A operação de intralogística almoxarifado central e expedição sofre com rupturas frequentes no abastecimento das células produtivas devido a divergências constantes de inventário físico e movimentação manual desordenada de paletes pelos corredores internos. Como os materiais recebidos não possuem etiquetas inteligentes de identificação por radiofrequência nem endereçamento digitalizado nas prateleiras os auxiliares logísticos perdem dezenas de minutos procurando caixas específicas e conferindo notas fiscais em listas impressas desatualizadas. Frequentemente uma linha de montagem interrompe suas atividades por falta de parafusos especiais ou chicotes elétricos que constavam como disponíveis no sistema administrativo mas estavam armazenados em corredores incorretos ou bloqueados sem aviso prévio. Na área de expedição a separação despadronizada dos pedidos provoca trocas de volumes embarques incompletos e demora excessiva no carregamento dos caminhões de transporte gerando multas contratuais e reclamações recorrentes dos distribuidores regionais. Além disso o tráfego simultâneo de empilhadeiras manuais e carrinhos de abastecimento sem sinalização inteligente aumenta o risco de colisões avarias nas embalagens e fadiga física da equipe operacional reduzindo drasticamente a acuracidade do estoque e elevando os custos logísticos totais da planta industrial. Dessa forma a ausência de rastreamento automatizado compromete o fluxo contínuo entre o recebimento a armazenagem e a entrega final aos clientes.",
         turnoMin: 480,
         diasMes: 22,
         paradaMin: 110,
@@ -1466,13 +1677,13 @@
           { label: "Turno / Dias Úteis", valor: "480 min/dia • 22 dias/mês", detalhe: "10.560 min disponíveis/mês" },
           { label: "Buscas / Conferência Manual", valor: "110 min/turno (22,9%)", detalhe: "Meta 4.0: reduzir para 25 min" },
           { label: "Pedidos & Divergências", valor: "120 pedidos • 18 com atraso", detalhe: "Acuracidade atual: 85,0% (15% falha)" },
-          { label: "Custo por Pedido Atrasado", valor: "R$ 55,00 / pedido", detalhe: "Perda: R$ 21.780,00/mês (Meta: 2 ped)" }
+          { label: "Custo por Pedido Atrasado", valor: "R$ 55,00 / pedido", detalhe: "Meta 4.0: reduzir para 2 pedidos" }
         ]
       },
       D: {
         codigo: "D",
         nome: "Setor D — Pintura Eletrostática, Acabamento e ESG",
-        paragrafo1: "A cabine de pintura eletrostática e acabamento apresenta alto desperdício de insumos químicos e consumo excessivo de energia térmica nos fornos de cura resultando em falhas de aderência superficial geração elevada de resíduos industriais e aumento significativo nos custos ambientais da planta.",
+        paragrafo1: "A cabine de pintura eletrostática e acabamento superficial apresenta alto desperdício de tinta em pó insumos químicos de preparação e consumo excessivo de energia térmica nos fornos de cura devido à falta de controle automatizado de vazão temperatura e umidade relativa. Atualmente os aplicadores regulam a pressão das pistolas de pintura por tentativa e erro a cada troca de cor ou geometria das peças metálicas resultando em camadas irregulares bolhas de acabamento e falhas graves de aderência após o aquecimento. Sempre que um lote apresenta espessura fora do padrão técnico as peças precisam retornar para lixamento químico e nova pintura dobrando o gasto energético e gerando volume elevado de borra industrial e efluentes contaminados que exigem tratamento especializado. Além disso o sistema de exaustão opera em potência máxima mesmo nos intervalos ociosos entre lotes desperdiçando eletricidade e elevando a emissão de compostos voláteis no ambiente fabril sem monitoramento contínuo da qualidade do ar. Essa ineficiência produtiva e ambiental impacta diretamente as metas corporativas de sustentabilidade aumenta os custos com descarte de resíduos perigosos e prejudica a competitividade e a imagem institucional da empresa perante auditorias ambientais e clientes exigentes. Sem telemetria energética a fábrica desconhece o consumo real por peça pintada.",
         turnoMin: 480,
         diasMes: 22,
         paradaMin: 72,
@@ -1484,7 +1695,7 @@
           { label: "Turno / Dias Úteis", valor: "480 min/dia • 22 dias/mês", detalhe: "10.560 min disponíveis/mês" },
           { label: "Reprocesso Cabine / Forno", valor: "72 min/turno (15,0%)", detalhe: "Meta 4.0: reduzir para 18 min" },
           { label: "Peças Pintadas & Perdas", valor: "200 unid/turno • 28 falhas", detalhe: "Taxa de reprovação atual: 14,0%" },
-          { label: "Custo Insumos + Descarte", valor: "R$ 38,00 / unidade", detalhe: "Perda: R$ 23.408,00/mês (Meta: 6 unid)" }
+          { label: "Custo Insumos + Descarte", valor: "R$ 38,00 / unidade", detalhe: "Meta 4.0: reduzir para 6 falhas" }
         ]
       }
     };
@@ -1527,7 +1738,7 @@
         .trim();
     }
 
-    // Sorteio determinístico por equipe da palavra-chave entre a 10ª e a 35ª posição (1-indexed: 10..35)
+    // Sorteio determinístico por equipe da palavra-chave entre a 25ª e a 145ª posição (1-indexed: 25..145)
     function sortearPalavraChaveEquipe(nomeEquipe, setorKey) {
       const setor = SETORES_ECOTECH[setorKey] || SETORES_ECOTECH.A;
       const palavras = setor.paragrafo1.trim().split(/\s+/);
@@ -1538,21 +1749,21 @@
         hash = (hash * 31 + normName.charCodeAt(i)) >>> 0;
       }
 
-      // Intervalo 1-indexed [10..35] -> 0-indexed [9..34]
-      const minIdx = 9;
-      const maxIdx = Math.min(34, palavras.length - 1);
+      // Intervalo 1-indexed [25..145] -> 0-indexed [24..144]
+      const minIdx = 24;
+      const maxIdx = Math.min(144, palavras.length - 1);
       let idx = minIdx + (hash % (maxIdx - minIdx + 1));
 
-      // Evita preposições/artigos de 1-2 letras avançando dentro da janela 10..35
+      // Garante palavra substantiva (>= 4 letras) dentro da janela 25..145 para evitar ambiguidades
       let tentativas = 0;
-      while (limparPalavraPontuacao(palavras[idx]).length <= 2 && tentativas < 10) {
+      while (limparPalavraPontuacao(palavras[idx]).length <= 3 && tentativas < 30) {
         idx = idx < maxIdx ? idx + 1 : minIdx;
         tentativas++;
       }
 
       return {
         palavra: limparPalavraPontuacao(palavras[idx]),
-        posicao: idx + 1 // 1-indexed entre 10 e 35
+        posicao: idx + 1 // 1-indexed entre 25 e 145
       };
     }
 
@@ -1587,7 +1798,7 @@
         toast.style.opacity = "0";
         toast.style.transform = "translateY(8px)";
         setTimeout(() => toast.remove(), 300);
-      }, 3600);
+      }, 3800);
     }
 
     function escapeHtml(text) {
@@ -1629,16 +1840,18 @@
         setor,
         integrantesLista,
         integrantes: integrantesLista.join(", "),
-        // Campos do Sprint (mantendo retrocompatibilidade com chaves antigas)
+        // Campos do Sprint (mantendo 100% de retrocompatibilidade com chaves existentes na nuvem)
         dia1_diagnostico: data.dia1_diagnostico ?? data.dia1 ?? "",
         dia1_gargalos: data.dia1_gargalos ?? "",
         dia2_calculos: data.dia2_calculos ?? data.dia2 ?? "",
+        dia2_manual_prejuizo: data.dia2_manual_prejuizo ?? "",
+        dia2_manual_economia: data.dia2_manual_economia ?? "",
         dia2_tecnologia40: data.dia2_tecnologia40 ?? "",
         dia3_5w2h: data.dia3_5w2h ?? data.dia3 ?? "",
         dia3_pop_esg: data.dia3_pop_esg ?? "",
         dia4_pitch: data.dia4_pitch ?? data.dia4 ?? "",
         dia4_conclusao: data.dia4_conclusao ?? "",
-        // Novos campos: Contrate um Auditor ou Assistente
+        // Campos: Contrate um Auditor ou Assistente
         vagaAuditorAtiva: Boolean(data.vagaAuditorAtiva),
         vagaAuditorPerfilSugerido: data.vagaAuditorPerfilSugerido || "Auditor(a) ou Assistente",
         vagaAuditorNotaProf: data.vagaAuditorNotaProf || "",
@@ -1710,7 +1923,7 @@
               verificarEquipeExistenteAoDigitar(inputEq.value);
             }
 
-            // Se a equipe atual estiver aberta, atualiza ao vivo (ex: professor liberou vaga de Auditor!)
+            // Se a equipe atual estiver aberta, atualiza ao vivo
             if (currentTeamId && allTeamsMap.has(currentTeamId)) {
               const latest = allTeamsMap.get(currentTeamId);
               const vagaMudou = currentTeamData && currentTeamData.vagaAuditorAtiva !== latest.vagaAuditorAtiva;
@@ -1934,7 +2147,6 @@
       // Verifica novamente se existe cadastro na nuvem para abrir pelo ID exato sem duplicar
       const existente = buscarEquipeUniversal(nomeInput);
       if (existente) {
-        // Se o usuário preencheu novos integrantes na tela inicial e a equipe ainda não tinha, mescla suavemente
         const novosIntegrantes = Array.from(document.querySelectorAll(".login-member-input"))
           .map(el => el.value.trim())
           .filter(Boolean);
@@ -1996,6 +2208,9 @@
       document.getElementById("viewModuloProfessor").classList.add("hidden");
       document.getElementById("viewWorkspaceEquipe").classList.remove("hidden");
       document.getElementById("btnVoltarInicio").classList.remove("hidden");
+
+      // Carrega os dados do setor na calculadora do Dia 2 automaticamente ao entrar
+      preencherCalculadoraComSetor(false);
 
       sincronizarUIComEquipeAtual(true);
       selecionarDiaSprint(1);
@@ -2083,10 +2298,10 @@
         cardAuditor.classList.add("hidden");
       }
 
-      // Dia 1: Setor + Palavra-chave + KPIs
+      // Dia 1: Setor + Apenas a posição da palavra-chave (NÃO revela a palavra!) + Estudo de caso sem destaque
       document.getElementById("d1TituloSetor").textContent = setorInfo.nome;
-      document.getElementById("d1PalavraChaveDisplay").textContent = kw.palavra.toUpperCase();
-      document.getElementById("d1PosicaoPalavraDisplay").textContent = `(palavra #${kw.posicao} do texto)`;
+      document.getElementById("d1MissaoAuditoriaTitulo").textContent =
+        `🔑 Missão de Auditoria: Localize a Palavra #${kw.posicao} no texto`;
       document.getElementById("d1TextoEstudoCaso").textContent = setorInfo.paragrafo1;
 
       const kpisHtml = setorInfo.kpis.map(k => `
@@ -2100,12 +2315,14 @@
       document.getElementById("d2ColaRapidaGrid").innerHTML = kpisHtml;
       document.getElementById("d2SetorTag").textContent = setorInfo.nome;
 
-      // Campos de texto do Sprint (sem sobrescrever se o usuário estiver digitando naquele campo)
+      // Campos de texto do Sprint e cálculos manuais do Dia 2
       const mapaCampos = [
         ["dia1_diagnostico", t.dia1_diagnostico],
         ["dia1_gargalos", t.dia1_gargalos],
         ["dia2_calculos", t.dia2_calculos],
         ["dia2_tecnologia40", t.dia2_tecnologia40],
+        ["calcManualPrejuizo", t.dia2_manual_prejuizo],
+        ["calcManualEconomia", t.dia2_manual_economia],
         ["dia3_5w2h", t.dia3_5w2h],
         ["dia3_pop_esg", t.dia3_pop_esg],
         ["dia4_pitch", t.dia4_pitch],
@@ -2114,7 +2331,7 @@
       mapaCampos.forEach(([elId, val]) => {
         const el = document.getElementById(elId);
         if (el && (forcarCamposTexto || document.activeElement !== el)) {
-          el.value = val || "";
+          el.value = val ?? "";
         }
       });
 
@@ -2122,6 +2339,7 @@
       atualizarBarraProgressoWorkspace();
     }
 
+    // Status do campo 1.1: NÃO revela a palavra antes de o aluno acertá-la na 1ª frase
     function atualizarStatusPalavraChaveUI() {
       if (!currentTeamData) return;
       const kw = sortearPalavraChaveEquipe(currentTeamData.equipe, currentTeamData.setor);
@@ -2129,10 +2347,10 @@
       const badge = document.getElementById("statusPalavraChaveDia1");
       if (ok) {
         badge.className = "px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
-        badge.textContent = `✅ Palavra-chave "${kw.palavra}" detectada na 1ª frase!`;
+        badge.textContent = `✅ Palavra-chave "${kw.palavra.toUpperCase()}" (#${kw.posicao}) confirmada na 1ª frase!`;
       } else {
         badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-400/30";
-        badge.textContent = `⚠️ Inclua "${kw.palavra}" na 1ª frase`;
+        badge.textContent = `⚠️ Busque a palavra #${kw.posicao} no estudo de caso e inclua-a na 1ª frase`;
       }
     }
 
@@ -2210,9 +2428,9 @@
     };
 
     // =========================================================================
-    // 9. CALCULADORA AUXILIAR GUIADA (DIA 2)
+    // 9. PAINEL HÍBRIDO DE KPIs DO DIA 2 (2 AUTOMÁTICOS + 2 MANUAIS + IMPORTAÇÃO)
     // =========================================================================
-    window.preencherCalculadoraComSetor = function () {
+    window.preencherCalculadoraComSetor = function (comNotificacao = true) {
       if (!currentTeamData) return;
       const s = SETORES_ECOTECH[currentTeamData.setor] || SETORES_ECOTECH.A;
       document.getElementById("calcTurnoMin").value = s.turnoMin;
@@ -2223,10 +2441,12 @@
       document.getElementById("calcCustoUnit").value = s.custoUnit.toFixed(2);
       document.getElementById("calcDefeitosMeta").value = s.defeitosMeta;
       recalcularKPIs();
-      mostrarToast(`⚡ Dados do Setor ${s.codigo} carregados na calculadora!`, "info");
+      if (comNotificacao) {
+        mostrarToast(`⚡ Dados operacionais do Setor ${s.codigo} carregados!`, "info");
+      }
     };
 
-    window.recalcularKPIs = function () {
+    function obterDadosAutomaticosDia2() {
       const turno = Math.max(1, parseFloat(document.getElementById("calcTurnoMin").value) || 480);
       const parada = Math.max(0, parseFloat(document.getElementById("calcParadaMin").value) || 0);
       const dias = Math.max(1, parseFloat(document.getElementById("calcDiasMes").value) || 22);
@@ -2237,25 +2457,108 @@
 
       const tempoUtil = Math.max(0, turno - parada);
       const disponibilidade = ((tempoUtil / turno) * 100).toFixed(1);
-      const taxaDefAtual = ((defAtual / prod) * 100).toFixed(1);
-      const taxaDefMeta = ((defMeta / prod) * 100).toFixed(1);
+      const taxaDefAtual = prod > 0 ? ((defAtual / prod) * 100).toFixed(1) : "0.0";
+      const taxaDefMeta = prod > 0 ? ((defMeta / prod) * 100).toFixed(1) : "0.0";
 
-      const perdaTurno = defAtual * custo;
-      const perdaMes = perdaTurno * dias;
-      const perdaNovaMes = defMeta * custo * dias;
-      const economiaMes = Math.max(0, perdaMes - perdaNovaMes);
-      const economiaAno = economiaMes * 12;
+      return {
+        turno,
+        parada,
+        dias,
+        prod,
+        defAtual,
+        custo,
+        defMeta,
+        tempoUtil,
+        disponibilidade,
+        taxaDefAtual,
+        taxaDefMeta
+      };
+    }
 
+    window.recalcularKPIs = function () {
+      const d = obterDadosAutomaticosDia2();
       const fmtBRL = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-      const texto =
-`MEMÓRIA DE CÁLCULO — INDICADORES OPERACIONAIS & FINANCEIROS:
-1) Disponibilidade Operacional: (${turno} min - ${parada} min) / ${turno} min = ${disponibilidade}% (${tempoUtil} min úteis/turno)
-2) Taxa de Falhas/Refugo Atual: (${defAtual} / ${prod}) × 100 = ${taxaDefAtual}% (Meta 4.0: ${taxaDefMeta}%)
-3) Prejuízo Mensal Atual: ${defAtual} unid/turno × ${fmtBRL(custo)} × ${dias} dias = ${fmtBRL(perdaMes)}/mês
-4) Economia Mensal Projetada (Indústria 4.0): ${fmtBRL(perdaMes)} - ${fmtBRL(perdaNovaMes)} = ${fmtBRL(economiaMes)}/mês (${fmtBRL(economiaAno)}/ano)`;
+      // Atualiza Etapa 1 (2 indicadores automáticos)
+      const elDisp = document.getElementById("autoKpiDisponibilidade");
+      const elTaxa = document.getElementById("autoKpiTaxaFalhas");
+      if (elDisp) {
+        elDisp.textContent = `${d.disponibilidade}% (${d.tempoUtil} min úteis/turno)`;
+      }
+      if (elTaxa) {
+        elTaxa.textContent = `Atual: ${d.taxaDefAtual}% • Meta 4.0: ${d.taxaDefMeta}%`;
+      }
 
-      document.getElementById("calcResultadoTexto").textContent = texto;
+      // Atualiza dicas de substituição dos dados nas Fórmulas 3 e 4 (sem revelar o resultado)
+      const hint3 = document.getElementById("hintFormula3Dados");
+      const hint4 = document.getElementById("hintFormula4Dados");
+      if (hint3) {
+        hint3.textContent = `Dados atuais: ${d.defAtual} falhas/turno × ${fmtBRL(d.custo)} × ${d.dias} dias úteis`;
+      }
+      if (hint4) {
+        hint4.textContent = `Dados Meta 4.0: ${d.defMeta} falhas/turno × ${fmtBRL(d.custo)} × ${d.dias} dias úteis`;
+      }
+    };
+
+    window.atualizarCalculoManual = function (campo, valor) {
+      if (!currentTeamData) return;
+      currentTeamData[campo] = valor;
+      agendarAutoSave();
+    };
+
+    function montarMemoriaCalculoCompleta(valPrejuizoManual, valEconomiaManual) {
+      const d = obterDadosAutomaticosDia2();
+      const fmtBRL = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      const economiaAnual = valEconomiaManual * 12;
+
+      return `MEMÓRIA DE CÁLCULO — INDICADORES OPERACIONAIS (SISTEMA) & FINANCEIROS (EQUIPE):
+
+[ETAPA 1 — INDICADORES OPERACIONAIS (CÁLCULO AUTOMÁTICO)]
+1) Disponibilidade Operacional: (${d.turno} min - ${d.parada} min) / ${d.turno} min × 100 = ${d.disponibilidade}% (${d.tempoUtil} min úteis/turno)
+2) Taxa de Falhas / Refugo: Atual = (${d.defAtual} / ${d.prod}) × 100 = ${d.taxaDefAtual}% | Meta 4.0 = (${d.defMeta} / ${d.prod}) × 100 = ${d.taxaDefMeta}%
+
+[ETAPA 2 — INDICADORES FINANCEIROS (CÁLCULO MANUAL DA EQUIPE)]
+3) Prejuízo Mensal Atual: ${d.defAtual} unid/turno × ${fmtBRL(d.custo)} × ${d.dias} dias = ${fmtBRL(valPrejuizoManual)}/mês
+4) Economia Mensal Projetada (Indústria 4.0): ${fmtBRL(valPrejuizoManual)} - (${d.defMeta} unid × ${fmtBRL(d.custo)} × ${d.dias} dias) = ${fmtBRL(valEconomiaManual)}/mês (${fmtBRL(economiaAnual)}/ano)`;
+    }
+
+    window.importarCalculosParaCampo21 = async function () {
+      const inputPrej = document.getElementById("calcManualPrejuizo");
+      const inputEcon = document.getElementById("calcManualEconomia");
+
+      const rawPrej = String(inputPrej.value || "").replace(",", ".").trim();
+      const rawEcon = String(inputEcon.value || "").replace(",", ".").trim();
+
+      const valPrej = parseFloat(rawPrej);
+      const valEcon = parseFloat(rawEcon);
+
+      if (!rawPrej || isNaN(valPrej) || valPrej <= 0) {
+        mostrarToast("⚠️ Calcule e preencha primeiro o 'Prejuízo Mensal Atual (R$)' na Etapa 2.", "warning");
+        inputPrej.focus();
+        return;
+      }
+
+      if (!rawEcon || isNaN(valEcon) || valEcon < 0) {
+        mostrarToast("⚠️ Calcule e preencha também a 'Economia Mensal Projetada (R$)' na Etapa 2.", "warning");
+        inputEcon.focus();
+        return;
+      }
+
+      const memoriaTexto = montarMemoriaCalculoCompleta(valPrej, valEcon);
+      const area21 = document.getElementById("dia2_calculos");
+      area21.value = memoriaTexto;
+
+      if (currentTeamData) {
+        currentTeamData.dia2_manual_prejuizo = rawPrej;
+        currentTeamData.dia2_manual_economia = rawEcon;
+        currentTeamData.dia2_calculos = memoriaTexto;
+        atualizarBarraProgressoWorkspace();
+        await persistirEquipeNoBanco(currentTeamData, false);
+        const btnText = document.getElementById("btnSalvarStatusTexto");
+        if (btnText) btnText.textContent = "Salvo na Nuvem ✓";
+      }
+
+      mostrarToast("✅ Cálculos (Automáticos + Manuais) importados para o Campo 2.1 e salvos na nuvem!", "success");
     };
 
     function copiarTextoAreaTransferencia(texto) {
@@ -2267,28 +2570,60 @@
       temp.select();
       try {
         document.execCommand("copy");
-        mostrarToast("📋 Conta copiada para a área de transferência!", "success");
+        mostrarToast("📋 Texto copiado para a área de transferência!", "success");
       } catch (e) {
-        mostrarToast("Não foi possível copiar automaticamente. Use o botão 'Inserir direto'.", "warning");
+        mostrarToast("Não foi possível copiar automaticamente.", "warning");
       }
       document.body.removeChild(temp);
     }
 
     window.copiarContaCalculadora = function () {
-      const texto = document.getElementById("calcResultadoTexto").textContent;
+      const rawPrej = parseFloat(String(document.getElementById("calcManualPrejuizo").value || "0").replace(",", ".")) || 0;
+      const rawEcon = parseFloat(String(document.getElementById("calcManualEconomia").value || "0").replace(",", ".")) || 0;
+      const texto = montarMemoriaCalculoCompleta(rawPrej, rawEcon);
       copiarTextoAreaTransferencia(texto);
     };
 
-    window.inserirContaDiretoDia2 = function () {
-      const texto = document.getElementById("calcResultadoTexto").textContent;
-      const area = document.getElementById("dia2_calculos");
-      area.value = area.value.trim() ? `${area.value.trim()}\n\n${texto}` : texto;
-      atualizarCampoDossie("dia2_calculos", area.value);
-      mostrarToast("➕ Memória de cálculo inserida no campo 2.1!", "success");
+    // =========================================================================
+    // 10. ROTEIRO-BASE DO PITCH (DIA 4 — 5 PASSOS EDITÁVEIS)
+    // =========================================================================
+    window.inserirRoteiroBasePitchDia4 = function () {
+      const area = document.getElementById("dia4_pitch");
+      if (!area) return;
+
+      const nomeEquipe = currentTeamData ? currentTeamData.equipe : "Nossa Equipe";
+      const setorInfo = currentTeamData ? (SETORES_ECOTECH[currentTeamData.setor] || SETORES_ECOTECH.A) : SETORES_ECOTECH.A;
+
+      const templatePitch =
+`ROTEIRO DO PITCH EXECUTIVO (5 MINUTOS) — ${nomeEquipe.toUpperCase()}
+
+PASSO 1 (0:00 – 1:00) | ABERTURA & GANCHO [Responsável: Integrante 1]
+- Saudação à banca/diretoria e apresentação da equipe consultora (${nomeEquipe}).
+- Gancho inicial: No ${setorInfo.nome}, identificamos um problema crítico que compromete a produtividade e gera perdas financeiras recorrentes...
+
+PASSO 2 (1:00 – 2:00) | DIAGNÓSTICO & CAUSA RAIZ [Responsável: Integrante 2]
+- Causa raiz (Ishikawa / 5 Porquês): [Explique o motivo principal do gargalo].
+- Desperdícios Lean mapeados: [Cite espera, retrabalho, movimentação, estoque ou falhas de controle].
+
+PASSO 3 (2:00 – 3:15) | NÚMEROS DA PERDA & SOLUÇÃO INDÚSTRIA 4.0 [Responsável: Integrante 3]
+- Indicadores atuais (Dia 2): Disponibilidade de [X]%, Taxa de Falhas de [Y]% e Prejuízo Mensal de R$ [Z].
+- Solução Indústria 4.0 proposta: [Apresente os sensores IoT, dashboard em tempo real, RFID ou Poka-Yoke digital e como eliminam a causa raiz].
+
+PASSO 4 (3:15 – 4:15) | EXECUÇÃO 5W2H, POP & ESG [Responsável: Integrante 4]
+- Plano 5W2H: Implantação em [prazo], liderada por [responsáveis], com investimento estimado de R$ [valor].
+- Padronização (POP) e ESG: Novo procedimento padrão para os operadores, reduzindo riscos de segurança (QSMS) e desperdício de insumos/energia.
+
+PASSO 5 (4:15 – 5:00) | VIABILIDADE FINANCEIRA (ROI) & FECHAMENTO [Responsável: Integrante 5]
+- Retorno financeiro: Redução de falhas com Economia Mensal Projetada de R$ [valor/mês] (R$ [valor/ano] ao ano).
+- Fechamento executivo: Recomendamos a aprovação imediata do projeto para transformar o ${setorInfo.nome} em referência de eficiência 4.0.`;
+
+      area.value = area.value.trim() ? `${area.value.trim()}\n\n${templatePitch}` : templatePitch;
+      atualizarCampoDossie("dia4_pitch", area.value);
+      mostrarToast("📋 Roteiro-Base de 5 Passos inserido no Campo 4.1! Personalize com os dados da equipe.", "success");
     };
 
     // =========================================================================
-    // 10. MODO BLOQUEIO IA (COM ISENÇÃO TOTAL PARA O PROFESSOR)
+    // 11. MODO BLOQUEIO IA (COM ISENÇÃO TOTAL PARA O PROFESSOR)
     // =========================================================================
     function atualizarBannerBloqueioIA() {
       const banner = document.getElementById("bannerBloqueioIA");
@@ -2313,7 +2648,7 @@
     });
 
     // =========================================================================
-    // 11. MÓDULO PROFESSOR COMPLETO + "CONTRATE UM AUDITOR OU ASSISTENTE"
+    // 12. MÓDULO PROFESSOR COMPLETO + "CONTRATE UM AUDITOR OU ASSISTENTE"
     // =========================================================================
     window.abrirModalLoginProfessor = function () {
       if (isTeacherAuthenticated) {
@@ -2500,14 +2835,14 @@
                 ${escapeHtml(t.integrantes || "Nenhum integrante cadastrado")}
               </div>
 
-              <!-- Conferência Palavra-chave & Progresso -->
+              <!-- Conferência Palavra-chave (Visível integralmente para o Professor) & Progresso -->
               <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
                 <span class="px-2.5 py-1 rounded-lg font-mono ${
                   kwOk
                     ? "bg-emerald-500/15 text-emerald-300 border border-emerald-400/30"
                     : "bg-slate-800 text-slate-300 border border-slate-700"
                 }">
-                  ${kwOk ? "✅" : "🔑"} Chave: <strong>${escapeHtml(kw.palavra)}</strong> (#${kw.posicao})
+                  ${kwOk ? "✅" : "🔑"} Chave: <strong>${escapeHtml(kw.palavra.toUpperCase())}</strong> (#${kw.posicao})
                 </span>
                 <span class="font-mono font-bold text-sky-300">Sprint: ${pct}%</span>
               </div>
@@ -2537,7 +2872,7 @@
     };
 
     // =========================================================================
-    // 12. MODAL GERENCIAR / EDITAR EQUIPE + CONFERÊNCIA COM <mark>
+    // 13. MODAL GERENCIAR / EDITAR EQUIPE + CONFERÊNCIA COM <mark> (DOCENTE)
     // =========================================================================
     window.abrirModalGerenciarEquipe = function (docId) {
       const t = allTeamsMap.get(docId);
@@ -2601,10 +2936,10 @@
 
       if (encontrada) {
         badge.className = "px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
-        badge.textContent = `✅ Palavra-chave "${kw.palavra}" (#${kw.posicao}) VALIDADA na 1ª frase!`;
+        badge.textContent = `✅ Palavra-chave "${kw.palavra.toUpperCase()}" (#${kw.posicao}) VALIDADA na 1ª frase!`;
       } else {
         badge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40";
-        badge.textContent = `⚠️ Palavra esperada: "${kw.palavra}" (#${kw.posicao})`;
+        badge.textContent = `⚠️ Palavra esperada: "${kw.palavra.toUpperCase()}" (posição #${kw.posicao})`;
       }
 
       if (!primeiraFrase) {
@@ -2612,7 +2947,7 @@
         return;
       }
 
-      // Destaca a palavra-chave na 1ª frase com <mark class="keyword-hit">
+      // Destaca a palavra-chave na 1ª frase com <mark class="keyword-hit"> para conferência do professor
       const normKw = normalizarTexto(kw.palavra);
       const tokens = primeiraFrase.split(/(\s+)/);
       const highlighted = tokens.map(tok => {
@@ -2739,7 +3074,7 @@
     }
 
     // =========================================================================
-    // 13. CRONÔMETRO DE BANCA (15 MINUTOS EM 3 FASES) & QR CODE DA AULA
+    // 14. CRONÔMETRO DE BANCA (15 MINUTOS EM 3 FASES) & QR CODE DA AULA
     // =========================================================================
     function formatarSegundosMMSS(seg) {
       const m = Math.floor(seg / 60);
@@ -2827,7 +3162,7 @@
     };
 
     // =========================================================================
-    // 14. IMPRESSÃO A4 LIMPA (INCLUINDO SEÇÃO DO AUDITOR / ASSISTENTE)
+    // 15. IMPRESSÃO A4 LIMPA (INCLUINDO SEÇÃO DO AUDITOR / ASSISTENTE)
     // =========================================================================
     window.prepararEImprimirDossie = function () {
       if (!currentTeamData) return;
@@ -2881,7 +3216,7 @@
         </div>
 
         <div class="print-box">
-          <div class="print-section-title">Dia 1 — Diagnóstico do Setor &amp; Auditoria (Palavra-Chave: ${escapeHtml(kw.palavra.toUpperCase())})</div>
+          <div class="print-section-title">Dia 1 — Diagnóstico do Setor &amp; Auditoria (Palavra #${kw.posicao}: ${escapeHtml(kw.palavra.toUpperCase())})</div>
           <p style="font-size:9pt; color:#334155; margin-bottom:6px;"><em>Estudo de Caso (${escapeHtml(setorInfo.nome)}): ${escapeHtml(setorInfo.paragrafo1)}</em></p>
           <div class="print-answer"><strong>1.1 Diagnóstico e Causa Raiz:</strong>\n${escapeHtml(t.dia1_diagnostico || "Não preenchido.")}</div>
           <div class="print-answer" style="margin-top:8px;"><strong>1.2 Gargalos e Desperdícios (Lean):</strong>\n${escapeHtml(t.dia1_gargalos || "Não preenchido.")}</div>
@@ -2924,7 +3259,7 @@
     }
 
     // =========================================================================
-    // 15. CONTROLE DE MODAIS & INICIALIZAÇÃO
+    // 16. CONTROLE DE MODAIS & INICIALIZAÇÃO
     // =========================================================================
     window.fecharModal = function (id) {
       document.getElementById(id).classList.add("hidden");
